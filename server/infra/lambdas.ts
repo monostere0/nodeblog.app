@@ -41,9 +41,18 @@ export default class LambdasStack extends cdk.Stack {
       }),
     };
 
-    props.tables.postsTable.grantReadWriteData(this.lambdas.createArticle);
-    props.tables.postsTable.grantReadWriteData(this.lambdas.getAllArticles);
-    props.tables.postsTable.grantReadWriteData(this.lambdas.getArticle);
+    props.tables.postsTable.grant(
+      this.lambdas.createArticle,
+      "dynamodb:PutItem"
+    );
+    props.tables.postsTable.grant(
+      this.lambdas.getAllArticles,
+      "dynamodb:PartiQLSelect"
+    );
+    props.tables.postsTable.grant(
+      this.lambdas.getArticle,
+      "dynamodb:PartiQLSelect"
+    );
   }
 
   private createLambda(
