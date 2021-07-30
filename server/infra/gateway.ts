@@ -18,46 +18,37 @@ export default class ApiGatewayStack extends cdk.Stack {
 
     this.restApi = new apigw.RestApi(this, "NodeBlog-ApiGateway", {
       restApiName: "NodeBlog-ApiGateway",
+      defaultCorsPreflightOptions: {
+        allowOrigins: apigw.Cors.ALL_ORIGINS,
+      },
     });
 
     const articles = this.restApi.root.addResource("articles");
-    articles.addMethod(
-      "GET",
-      new apigw.LambdaIntegration(props.lambdas.getAllArticles)
-    );
-    articles.addMethod(
-      "POST",
-      new apigw.LambdaIntegration(props.lambdas.createArticle)
-    );
-    this.addCorsOptions(articles);
+    this.registerMethod(articles, "GET", props.lambdas.getAllArticles);
+    this.registerMethod(articles, "POST", props.lambdas.createArticle);
 
     const article = articles.addResource("{slug}");
-    article.addMethod(
-      "GET",
-      new apigw.LambdaIntegration(props.lambdas.getArticle)
-    );
-    this.addCorsOptions(article);
+    this.registerMethod(article, "GET", props.lambdas.getArticle);
   }
 
-  private addCorsOptions(apiResource: apigw.IResource): void {
-    apiResource.addMethod(
-      "OPTIONS",
-      new apigw.MockIntegration({
+  private registerMethod(
+    resource: apigw.Resource,
+    httpVerb: string,
+    lambda: NodejsFunction
+  ) {
+    resource.addMethod(
+      httpVerb,
+      new apigw.LambdaIntegration(lambda, {
         integrationResponses: [
           {
             statusCode: "200",
             responseParameters: {
-              "method.response.header.Access-Control-Allow-Headers":
-                "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
               "method.response.header.Access-Control-Allow-Origin": "'*'",
-              "method.response.header.Access-Control-Allow-Credentials":
-                "'false'",
-              "method.response.header.Access-Control-Allow-Methods":
-                "'OPTIONS,GET,PUT,POST,DELETE'",
             },
           },
         ],
         passthroughBehavior: apigw.PassthroughBehavior.NEVER,
+        proxy: false,
         requestTemplates: {
           "application/json": '{"statusCode": 200}',
         },
@@ -67,9 +58,6 @@ export default class ApiGatewayStack extends cdk.Stack {
           {
             statusCode: "200",
             responseParameters: {
-              "method.response.header.Access-Control-Allow-Headers": true,
-              "method.response.header.Access-Control-Allow-Methods": true,
-              "method.response.header.Access-Control-Allow-Credentials": true,
               "method.response.header.Access-Control-Allow-Origin": true,
             },
           },
