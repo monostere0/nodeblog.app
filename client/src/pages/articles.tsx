@@ -1,21 +1,22 @@
 import * as React from 'react';
 import { Link } from 'gatsby';
 import { Button, Card, Classes, H5 } from '@blueprintjs/core';
+import ReactMarkdown from 'react-markdown';
+import classnames from 'classnames';
 
 import Layout from '../components/layout';
 import Seo from '../components/seo';
+import api from '../api';
 
 const ArticlesPage = () => {
   const [articles, setArticles] = React.useState([]);
 
+  const getArticles = async () => {
+    setArticles((await api.getArticles()) as unknown[]);
+  };
+
   React.useEffect(() => {
-    fetch(
-      'https://xsbnh3bks5.execute-api.eu-central-1.amazonaws.com/prod/articles'
-    )
-      .then(response => response.json())
-      .then(json => {
-        setArticles(JSON.parse(json.body));
-      });
+    getArticles();
   }, []);
 
   return (
@@ -25,15 +26,34 @@ const ArticlesPage = () => {
       <p>Welcome to page 2</p>
       <Link to="/">Go back to the homepage</Link>
       {articles.map(article => (
-        <Card key={article.id}>
-          <H5>
+        <Card
+          key={article.id}
+          style={{ marginBottom: '1em' }}
+          className={classnames({
+            [Classes.SKELETON]: articles.length === 0,
+          })}
+        >
+          <H5
+            className={classnames({
+              [Classes.SKELETON]: articles.length === 0,
+            })}
+          >
             <a href="#">{article.title}</a>
           </H5>
-          <p>{article.description}</p>
+          <p
+            className={classnames({
+              [Classes.SKELETON]: articles.length === 0,
+            })}
+          >
+            <ReactMarkdown children={article.description} />
+          </p>
           <Button
             style={{ alignSelf: 'left' }}
             text="View full article"
-            className={Classes.BUTTON}
+            className={classnames({
+              [Classes.SKELETON]: articles.length === 0,
+              [Classes.BUTTON]: true,
+            })}
           />
         </Card>
       ))}
