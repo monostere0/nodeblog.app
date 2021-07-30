@@ -1,0 +1,7 @@
+{
+  "context": {
+    "appName": "node-blog",
+    "region": "eu-central-1"
+  },
+  "app": "ts-node index"
+}
