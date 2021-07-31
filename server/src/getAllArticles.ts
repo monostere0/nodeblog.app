@@ -1,9 +1,10 @@
-import AWS from "aws-sdk";
-import { Handler, APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
-import log from "lambda-log";
+import AWS from 'aws-sdk';
+import { Handler, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+import log from 'lambda-log';
 
-import { unmarshallDynamoResults } from "./utils/dynamo";
-import { Article } from "./interfaces";
+import { unmarshallDynamoResults } from './utils/dynamo';
+import { createResponse } from './utils/lambda';
+import { Article } from './interfaces';
 
 const dynamoClient = new AWS.DynamoDB();
 
@@ -19,15 +20,9 @@ export const handler: Handler = async (
       })
       .promise();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(unmarshallDynamoResults<Article>(results)),
-    };
+    return createResponse(200, unmarshallDynamoResults<Article>(results));
   } catch (error) {
     log.error(error);
-    return {
-      statusCode: 400,
-      body: "An error has occured.",
-    };
+    return createResponse(400, 'An error has occured.');
   }
 };

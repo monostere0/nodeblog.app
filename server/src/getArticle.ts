@@ -1,9 +1,10 @@
-import AWS from "aws-sdk";
-import { Handler, APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
-import log from "lambda-log";
+import AWS from 'aws-sdk';
+import { Handler, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+import log from 'lambda-log';
 
-import { unmarshallDynamoResults } from "./utils/dynamo";
-import { Article } from "./interfaces";
+import { unmarshallDynamoResults } from './utils/dynamo';
+import { createResponse } from './utils/lambda';
+import { Article } from './interfaces';
 
 const dynamoClient = new AWS.DynamoDB();
 
@@ -16,7 +17,7 @@ export const handler: Handler = async (
     if (!slug) {
       return {
         statusCode: 404,
-        body: "Article not found",
+        body: 'Article not found',
       };
     }
 
@@ -31,21 +32,12 @@ export const handler: Handler = async (
       .promise();
 
     if (results.Items.length === 0) {
-      return {
-        statusCode: 404,
-        body: "Article not found",
-      };
+      return createResponse(404, 'Article not found.');
     }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(unmarshallDynamoResults<Article>(results)[0]),
-    };
+    return createResponse(200, unmarshallDynamoResults<Article>(results)[0]);
   } catch (error) {
     log.error(error);
-    return {
-      statusCode: 400,
-      body: "An error has occurred.",
-    };
+    return createResponse(400, 'An error has occurred.');
   }
 };

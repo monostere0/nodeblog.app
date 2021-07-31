@@ -6,6 +6,7 @@
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
     "@blueprintjs/core": "^3.47.0",
+    "@toast-ui/react-editor": "^3.0.1",
     "aphrodite": "^2.4.0",
     "classnames": "^2.3.1",
     "gatsby": "^3.10.2",

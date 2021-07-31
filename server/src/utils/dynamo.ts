@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import AWS from 'aws-sdk';
 
 export function unmarshallDynamoResults<T>(
   results: AWS.DynamoDB.ExecuteStatementOutput

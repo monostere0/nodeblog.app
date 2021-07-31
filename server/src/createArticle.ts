@@ -1,21 +1,30 @@
-import AWS from "aws-sdk";
-import { Handler, APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
-import { Article } from "./interfaces";
-import { v4 as uuidv4 } from "uuid";
-import log from "lambda-log";
+import AWS from 'aws-sdk';
+import { Handler, APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+import { v4 as uuidv4 } from 'uuid';
+import log from 'lambda-log';
+import slugify from '@sindresorhus/slugify';
+
+import { Article } from './interfaces';
+import { createResponse } from './utils/lambda';
 
 const dynamoClient = new AWS.DynamoDB.DocumentClient({
-  region: "eu-central-1",
+  region: 'eu-central-1',
 });
 
 export const handler: Handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
+    console.log(event);
+
     const requestBody = JSON.parse(event.body as string) as Article;
     const articleId = uuidv4();
 
     requestBody.date = new Date().toJSON();
+    requestBody.slug = slugify(requestBody.title)
+      .split('-')
+      .slice(0, 3)
+      .join('-');
 
     await dynamoClient
       .put({
@@ -27,11 +36,9 @@ export const handler: Handler = async (
       })
       .promise();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ id: articleId }),
-    };
+    return createResponse(200, { id: articleId });
   } catch (error) {
     log.error(error);
+    return createResponse(400, { id: null });
   }
 };

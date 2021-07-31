@@ -7,11 +7,18 @@ class API {
     return response;
   }
 
+  public async createArticle(body: unknown) {
+    await this.request('articles', body);
+  }
+
   private async request(path: string, body?: any): Promise<unknown> {
-    const response = await fetch(`${BASE_URL}/${path}`);
+    const options = body && {
+      method: 'POST',
+      body: JSON.stringify(body),
+    };
+    const response = await fetch(`${BASE_URL}/${path}`, options);
     const jsonBody = await response.json();
-    console.log(jsonBody);
-    return JSON.parse(jsonBody.body);
+    return jsonBody;
   }
 }
 

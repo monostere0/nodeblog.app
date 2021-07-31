@@ -1,5 +1,5 @@
-import * as cdk from "@aws-cdk/core";
-import * as dynamodb from "@aws-cdk/aws-dynamodb";
+import * as cdk from '@aws-cdk/core';
+import * as dynamodb from '@aws-cdk/aws-dynamodb';
 
 export default class DatabaseStack extends cdk.Stack {
   public tables: {
@@ -11,14 +11,14 @@ export default class DatabaseStack extends cdk.Stack {
     super(scope, id, props);
 
     this.tables = {
-      usersTable: this.createDynamoTable("NodeBlog-Users"),
-      postsTable: this.createDynamoTable("NodeBlog-Posts"),
+      usersTable: this.createDynamoTable('NodeBlog-Users'),
+      postsTable: this.createDynamoTable('NodeBlog-Posts'),
     };
   }
 
   private createDynamoTable(tableName: string): dynamodb.Table {
     return new dynamodb.Table(this, tableName, {
-      partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
+      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
       tableName,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
 

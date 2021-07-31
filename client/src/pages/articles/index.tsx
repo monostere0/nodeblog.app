@@ -4,9 +4,9 @@ import { Button, Card, Classes, H5 } from '@blueprintjs/core';
 import ReactMarkdown from 'react-markdown';
 import classnames from 'classnames';
 
-import Layout from '../components/layout';
-import Seo from '../components/seo';
-import api from '../api';
+import Layout from '../../components/layout';
+import Seo from '../../components/seo';
+import api from '../../api';
 
 const ArticlesPage = () => {
   const [articles, setArticles] = React.useState([]);
@@ -47,14 +47,7 @@ const ArticlesPage = () => {
           >
             <ReactMarkdown children={article.description} />
           </p>
-          <Button
-            style={{ alignSelf: 'left' }}
-            text="View full article"
-            className={classnames({
-              [Classes.SKELETON]: articles.length === 0,
-              [Classes.BUTTON]: true,
-            })}
-          />
+          <Link to={`/articles/${article.slug}`}>View article</Link>
         </Card>
       ))}
     </Layout>

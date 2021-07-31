@@ -1,8 +1,8 @@
-import * as cdk from "@aws-cdk/core";
-import * as lambda from "@aws-cdk/aws-lambda";
-import * as lambdaNode from "@aws-cdk/aws-lambda-nodejs";
-import { Table } from "@aws-cdk/aws-dynamodb";
-import { join } from "path";
+import * as cdk from '@aws-cdk/core';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as lambdaNode from '@aws-cdk/aws-lambda-nodejs';
+import { Table } from '@aws-cdk/aws-dynamodb';
+import { join } from 'path';
 
 interface Props extends cdk.StackProps {
   tables: {
@@ -23,35 +23,35 @@ export default class LambdasStack extends cdk.Stack {
 
     this.lambdas = {
       createArticle: this.createLambda(
-        "NodeBlog-createArticle",
-        "createArticle.ts",
+        'NodeBlog-createArticle',
+        'createArticle.ts',
         {
           DYNAMO_TABLE: props.tables.postsTable.tableName,
         }
       ),
       getAllArticles: this.createLambda(
-        "NodeBlog-getAllArticles",
-        "getAllArticles.ts",
+        'NodeBlog-getAllArticles',
+        'getAllArticles.ts',
         {
           DYNAMO_TABLE: props.tables.postsTable.tableName,
         }
       ),
-      getArticle: this.createLambda("NodeBlog-getArticle", "getArticle.ts", {
+      getArticle: this.createLambda('NodeBlog-getArticle', 'getArticle.ts', {
         DYNAMO_TABLE: props.tables.postsTable.tableName,
       }),
     };
 
     props.tables.postsTable.grant(
       this.lambdas.createArticle,
-      "dynamodb:PutItem"
+      'dynamodb:PutItem'
     );
     props.tables.postsTable.grant(
       this.lambdas.getAllArticles,
-      "dynamodb:PartiQLSelect"
+      'dynamodb:PartiQLSelect'
     );
     props.tables.postsTable.grant(
       this.lambdas.getArticle,
-      "dynamodb:PartiQLSelect"
+      'dynamodb:PartiQLSelect'
     );
   }
 
@@ -62,9 +62,9 @@ export default class LambdasStack extends cdk.Stack {
   ): lambdaNode.NodejsFunction {
     return new lambdaNode.NodejsFunction(this, name, {
       functionName: name,
-      entry: join(__dirname, "..", "src", fileName),
+      entry: join(__dirname, '..', 'src', fileName),
       bundling: {
-        externalModules: ["aws-sdk"],
+        externalModules: ['aws-sdk'],
       },
       environment,
       runtime: lambda.Runtime.NODEJS_14_X,
