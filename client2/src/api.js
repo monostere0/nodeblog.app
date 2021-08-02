@@ -2,16 +2,19 @@ const BASE_URL =
   'https://xsbnh3bks5.execute-api.eu-central-1.amazonaws.com/prod';
 
 class API {
-  public async getArticles() {
-    const response = await this.request('articles');
-    return response;
+  async getArticles() {
+    return await this.request('articles');
   }
 
-  public async createArticle(body: unknown) {
+  async createArticle(body) {
     await this.request('articles', body);
   }
 
-  private async request(path: string, body?: any): Promise<unknown> {
+  async getArticle(slug) {
+    return await this.request(`articles/${slug}`);
+  }
+
+  async request(path, body) {
     const options = body && {
       method: 'POST',
       body: JSON.stringify(body),
@@ -22,4 +25,4 @@ class API {
   }
 }
 
-export default new API();
+module.exports = new API();

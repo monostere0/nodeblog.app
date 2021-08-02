@@ -1,19 +1,17 @@
 import * as React from 'react';
 import { Link } from 'gatsby';
-import { Button, Card, Classes, H1, EditableText } from '@blueprintjs/core';
-import ReactMarkdown from 'react-markdown';
-import classnames from 'classnames';
+import { Button, H1, EditableText } from '@blueprintjs/core';
 
 import Layout from '../../components/layout';
 import Seo from '../../components/seo';
 import api from '../../api';
 
-import { Editor } from '@toast-ui/react-editor';
+// import { Editor } from '@toast-ui/react-editor';
 
-import '@toast-ui/editor/dist/toastui-editor.css';
+// import '@toast-ui/editor/dist/toastui-editor.css';
 
 const CreateArticlePage = () => {
-  const tuiEditorRef = React.createRef<Editor>();
+  const tuiEditorRef = React.createRef<any>();
   const [article, setArticle] =
     React.useState<{ title: string; content: string }>();
 
@@ -26,11 +24,7 @@ const CreateArticlePage = () => {
   };
 
   const createArticle = () => {
-    api.createArticle({
-      ...article,
-      authorName: 'unknown',
-      slug: article.title.split(/\s/).slice(0, 3).join('-').toLowerCase(),
-    });
+    api.createArticle(article);
   };
 
   return (
@@ -45,12 +39,12 @@ const CreateArticlePage = () => {
         onClick={() => createArticle()}
       />
       <H1>
-        <EditableText
+        {/* <EditableText
           placeholder="Click to edit the title"
           onConfirm={value => saveArticle(value)}
-        />
+        /> */}
       </H1>
-      <Editor
+      {/* <Editor
         initialValue="hello react editor world!"
         previewStyle="vertical"
         height="600px"
@@ -63,7 +57,7 @@ const CreateArticlePage = () => {
             tuiEditorRef.current.getInstance().getMarkdown()
           )
         }
-      />
+      /> */}
     </Layout>
   );
 };

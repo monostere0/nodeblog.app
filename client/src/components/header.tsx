@@ -1,6 +1,9 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
+import React from 'react';
+
+import 'normalize.css/normalize.css';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
+
 import { StyleSheet, css } from 'aphrodite';
 
 const styles = StyleSheet.create({
@@ -8,40 +11,31 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: `rebeccapurple`,
-    marginBottom: `1.45rem`,
+    background: 'rebeccapurple',
+    marginBottom: '1.45rem',
+    color: 'white',
     height: 200,
   },
   headerContainer: {
-    margin: `0 auto`,
+    margin: '0 auto',
     maxWidth: 960,
-    padding: `1.45rem 1.0875rem`,
+    padding: '1.45rem 1.0875rem',
   },
   link: {
-    color: `white`,
-    textDecoration: `none`,
+    color: 'white',
+    textDecoration: 'none',
   },
   title: { margin: 0 },
 });
 
-const Header = ({ siteTitle }) => (
+const Header: React.FC = () => (
   <header className={css(styles.header)}>
     <div className={css(styles.headerContainer)}>
       <h1 className={css(styles.title)}>
-        <Link to="/" className={css(styles.link)}>
-          {siteTitle}
-        </Link>
+        <span>NodeBlog.</span>
       </h1>
     </div>
   </header>
 );
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-};
-
-Header.defaultProps = {
-  siteTitle: ``,
-};
 
 export default Header;

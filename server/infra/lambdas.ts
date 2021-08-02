@@ -1,6 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda';
-import * as lambdaNode from '@aws-cdk/aws-lambda-nodejs';
+import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
 import { Table } from '@aws-cdk/aws-dynamodb';
 import { join } from 'path';
 
@@ -13,9 +13,9 @@ interface Props extends cdk.StackProps {
 
 export default class LambdasStack extends cdk.Stack {
   public lambdas: {
-    createArticle: lambdaNode.NodejsFunction;
-    getAllArticles: lambdaNode.NodejsFunction;
-    getArticle: lambdaNode.NodejsFunction;
+    createArticle: NodejsFunction;
+    getAllArticles: NodejsFunction;
+    getArticle: NodejsFunction;
   };
 
   constructor(scope: cdk.Construct, id: string, props?: Props) {
@@ -59,9 +59,10 @@ export default class LambdasStack extends cdk.Stack {
     name: string,
     fileName: string,
     environment?: { [key: string]: string }
-  ): lambdaNode.NodejsFunction {
-    return new lambdaNode.NodejsFunction(this, name, {
+  ): NodejsFunction {
+    return new NodejsFunction(this, name, {
       functionName: name,
+      awsSdkConnectionReuse: true,
       entry: join(__dirname, '..', 'src', fileName),
       bundling: {
         externalModules: ['aws-sdk'],

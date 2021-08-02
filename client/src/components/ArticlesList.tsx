@@ -1,18 +1,16 @@
-import * as React from 'react';
-import { Link } from 'gatsby';
-import { Button, Card, Classes, H5 } from '@blueprintjs/core';
+import React from 'react';
+import { Card, Classes, H5 } from '@blueprintjs/core';
 import ReactMarkdown from 'react-markdown';
 import classnames from 'classnames';
 
-import Layout from '../../components/layout';
-import Seo from '../../components/seo';
-import api from '../../api';
+import api from '../lib/api';
+import { Link } from 'react-router-dom';
 
-const ArticlesPage = () => {
+const ArticlesList: React.FC = () => {
   const [articles, setArticles] = React.useState([]);
 
   const getArticles = async () => {
-    setArticles((await api.getArticles()) as unknown[]);
+    setArticles(await api.getArticles());
   };
 
   React.useEffect(() => {
@@ -20,12 +18,10 @@ const ArticlesPage = () => {
   }, []);
 
   return (
-    <Layout>
-      <Seo title="Page two" />
+    <div>
       <h1>Articles page</h1>
       <p>Welcome to page 2</p>
-      <Link to="/">Go back to the homepage</Link>
-      {articles.map(article => (
+      {articles.map((article: Record<any, any>) => (
         <Card
           key={article.id}
           style={{ marginBottom: '1em' }}
@@ -38,7 +34,7 @@ const ArticlesPage = () => {
               [Classes.SKELETON]: articles.length === 0,
             })}
           >
-            <a href="#">{article.title}</a>
+            {article.title}
           </H5>
           <p
             className={classnames({
@@ -50,8 +46,8 @@ const ArticlesPage = () => {
           <Link to={`/articles/${article.slug}`}>View article</Link>
         </Card>
       ))}
-    </Layout>
+    </div>
   );
 };
 
-export default ArticlesPage;
+export default ArticlesList;

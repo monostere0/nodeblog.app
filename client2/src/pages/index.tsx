@@ -4,15 +4,15 @@ import { Button, Card, Classes, H5 } from '@blueprintjs/core';
 import ReactMarkdown from 'react-markdown';
 import classnames from 'classnames';
 
-import Layout from '../../components/layout';
-import Seo from '../../components/seo';
-import api from '../../api';
+import Layout from '../components/layout';
+import Seo from '../components/seo';
+import api from '../api';
 
 const ArticlesPage = () => {
   const [articles, setArticles] = React.useState([]);
 
   const getArticles = async () => {
-    setArticles((await api.getArticles()) as unknown[]);
+    setArticles(await api.getArticles());
   };
 
   React.useEffect(() => {

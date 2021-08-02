@@ -7,9 +7,7 @@ import slugify from '@sindresorhus/slugify';
 import { Article } from './interfaces';
 import { createResponse } from './utils/lambda';
 
-const dynamoClient = new AWS.DynamoDB.DocumentClient({
-  region: 'eu-central-1',
-});
+const dynamoClient = new AWS.DynamoDB.DocumentClient();
 
 export const handler: Handler = async (
   event: APIGatewayEvent
@@ -25,6 +23,9 @@ export const handler: Handler = async (
       .split('-')
       .slice(0, 3)
       .join('-');
+
+    // TODO: Replace this with once auth is in place
+    requestBody.authorName = 'unknown';
 
     await dynamoClient
       .put({
