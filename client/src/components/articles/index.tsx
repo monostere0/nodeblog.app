@@ -31,9 +31,9 @@ const ArticlesList: React.FC = () => {
   }
 
   return (
-    <div>
+    <section>
       {articles.map((article: Record<any, any>) => (
-        <div
+        <article
           style={{
             borderBottom: 'dashed 1px lightgray',
             padding: '2rem 0',
@@ -50,9 +50,9 @@ const ArticlesList: React.FC = () => {
           <Link style={{ marginTop: '1rem' }} to={`/articles/${article.slug}`}>
             Read article
           </Link>
-        </div>
+        </article>
       ))}
-    </div>
+    </section>
   );
 };
 

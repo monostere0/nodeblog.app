@@ -10,7 +10,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Header />
-      <main style={{ margin: '0 5rem' }}>
+      <main style={{ padding: '0 5rem' }}>
         <Switch>
           <Route path="/" exact component={ArticlesList} />
           <Route path="/articles/:slug" component={Article} />

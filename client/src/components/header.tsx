@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     background: 'rebeccapurple',
     marginBottom: '1.45rem',
-    color: 'white',
+    color: 'floralwhite',
     height: 200,
   },
   headerContainer: {
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
   },
   link: {
-    color: 'white',
+    color: 'floralwhite',
     textDecoration: 'none',
   },
   title: { margin: 0, fontSize: '3rem' },
