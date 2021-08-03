@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Button, H1, EditableText } from '@blueprintjs/core';
-
 import { Editor } from '@toast-ui/react-editor';
 import api from '../../lib/api';
 

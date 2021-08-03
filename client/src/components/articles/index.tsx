@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, H5 } from '@blueprintjs/core';
-
+import { H1 } from '@blueprintjs/core';
+import relativeDate from 'relative-date';
 import api from '../../lib/api';
 import { Link } from 'react-router-dom';
 
@@ -17,13 +17,25 @@ const ArticlesList: React.FC = () => {
 
   return (
     <div>
-      <h1>Articles page</h1>
-      <p>Welcome to page 2</p>
       {articles.map((article: Record<any, any>) => (
-        <Card key={article.id} style={{ marginBottom: '1em' }}>
-          <H5>{article.title}</H5>
-          <Link to={`/articles/${article.slug}`}>View article</Link>
-        </Card>
+        <div
+          style={{
+            borderBottom: 'dashed 1px lightgray',
+            padding: '2rem 0',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+          key={article.id}
+        >
+          <H1 style={{ color: 'rebeccapurple' }}>{article.title}</H1>
+          <p>
+            Written by <em>{article.authorName} </em>
+            {relativeDate(new Date(article.date))}
+          </p>
+          <Link style={{ marginTop: '1rem' }} to={`/articles/${article.slug}`}>
+            Read article
+          </Link>
+        </div>
       ))}
     </div>
   );

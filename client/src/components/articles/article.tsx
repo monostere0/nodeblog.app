@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card, Classes, H5 } from '@blueprintjs/core';
+import { H1 } from '@blueprintjs/core';
 import ReactMarkdown from 'react-markdown';
+import relativeDate from 'relative-date';
 import gfm from 'remark-gfm';
 import breaks from 'remark-breaks';
 import classnames from 'classnames';
@@ -29,17 +30,17 @@ const Article: React.FC<RouteComponentProps<Record<string, string>>> = ({
 
   return (
     <div>
-      <h1>Articles page</h1>
-      <p>Welcome to page 2</p>
-      <Card key={article.id} style={{ marginBottom: '1em' }}>
-        <H5>{article.title}</H5>
-        <div>
-          <ReactMarkdown
-            remarkPlugins={[gfm, breaks]}
-            children={article.content}
-          />
-        </div>
-      </Card>
+      <H1 style={{ color: 'rebeccapurple' }}>{article.title}</H1>
+      <p>
+        Written by <em>{article.authorName} </em>
+        {relativeDate(new Date(article.date))}
+      </p>
+      <div style={{ borderBottom: 'dashed 1px lightgray', padding: '2rem 0' }}>
+        <ReactMarkdown
+          remarkPlugins={[gfm, breaks]}
+          children={article.content}
+        />
+      </div>
     </div>
   );
 };
