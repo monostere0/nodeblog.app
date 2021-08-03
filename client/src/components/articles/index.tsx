@@ -1,5 +1,5 @@
 import React from 'react';
-import { H1 } from '@blueprintjs/core';
+import { H1, Spinner } from '@blueprintjs/core';
 import relativeDate from 'relative-date';
 import api from '../../lib/api';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,21 @@ const ArticlesList: React.FC = () => {
   React.useEffect(() => {
     getArticles();
   }, []);
+
+  if (articles.length === 0) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '50vh',
+        }}
+      >
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div>

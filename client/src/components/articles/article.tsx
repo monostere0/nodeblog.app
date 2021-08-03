@@ -1,5 +1,5 @@
 import React from 'react';
-import { H1 } from '@blueprintjs/core';
+import { H1, Spinner, Breadcrumbs } from '@blueprintjs/core';
 import ReactMarkdown from 'react-markdown';
 import relativeDate from 'relative-date';
 import gfm from 'remark-gfm';
@@ -25,23 +25,53 @@ const Article: React.FC<RouteComponentProps<Record<string, string>>> = ({
   }, []);
 
   if (article === undefined) {
-    return null;
+    return (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '50vh',
+        }}
+      >
+        <Spinner />
+      </div>
+    );
   }
 
   return (
-    <div>
-      <H1 style={{ color: 'rebeccapurple' }}>{article.title}</H1>
-      <p>
-        Written by <em>{article.authorName} </em>
-        {relativeDate(new Date(article.date))}
-      </p>
-      <div style={{ borderBottom: 'dashed 1px lightgray', padding: '2rem 0' }}>
-        <ReactMarkdown
-          remarkPlugins={[gfm, breaks]}
-          children={article.content}
-        />
-      </div>
-    </div>
+    <section>
+      <Breadcrumbs
+        items={[
+          { href: '/', icon: 'home' },
+          {
+            href: `/articles/${article.slug}`,
+            icon: 'manually-entered-data',
+            text: article.title,
+          },
+        ]}
+      />
+      <article
+        style={{
+          borderBottom: 'dashed 1px lightgray',
+          padding: '2rem 0',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <H1 style={{ color: 'rebeccapurple' }}>{article.title}</H1>
+        <p>
+          Written by <em>{article.authorName} </em>
+          {relativeDate(new Date(article.date))}
+        </p>
+        <div>
+          <ReactMarkdown
+            remarkPlugins={[gfm, breaks]}
+            children={article.content}
+          />
+        </div>
+      </article>
+    </section>
   );
 };
 

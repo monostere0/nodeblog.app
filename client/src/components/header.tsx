@@ -10,20 +10,19 @@ const styles = StyleSheet.create({
   header: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     background: 'rebeccapurple',
     marginBottom: '1.45rem',
     color: 'white',
     height: 200,
   },
   headerContainer: {
-    margin: '0 auto',
     maxWidth: 960,
-    padding: '1.45rem 1.0875rem',
+    paddingLeft: '5rem',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   link: {
     color: 'white',
