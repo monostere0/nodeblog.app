@@ -19,6 +19,7 @@ class API {
       method: 'POST',
       body: JSON.stringify(body),
     };
+
     const response = await fetch(`${BASE_URL}/${path}`, options);
     const jsonBody = await response.json();
     return jsonBody;

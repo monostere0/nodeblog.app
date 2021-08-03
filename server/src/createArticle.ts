@@ -27,6 +27,11 @@ export const handler: Handler = async (
     // TODO: Replace this with once auth is in place
     requestBody.authorName = 'unknown';
 
+    // Escape line breaks and other characters before saving to DDB
+    requestBody.content = escape(requestBody.content);
+
+    console.log('Article', requestBody);
+
     await dynamoClient
       .put({
         TableName: process.env.DYNAMO_TABLE,

@@ -20,7 +20,16 @@ export const handler: Handler = async (
       })
       .promise();
 
-    return createResponse(200, unmarshallDynamoResults<Article>(results));
+    const articles = unmarshallDynamoResults<Article>(results);
+
+    return createResponse(
+      200,
+      // Restore special characters
+      articles.map((article: Article) => ({
+        ...article,
+        content: unescape(article.content),
+      }))
+    );
   } catch (error) {
     log.error(error);
     return createResponse(400, 'An error has occured.');

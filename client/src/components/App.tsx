@@ -2,7 +2,9 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Header from './Header';
 
-import ArticlesList from './ArticlesList';
+import ArticlesList from './articles';
+import Article from './articles/article';
+import CreateArticle from './admin/create-article';
 
 const App: React.FC = () => {
   return (
@@ -10,7 +12,8 @@ const App: React.FC = () => {
       <Header />
       <Switch>
         <Route path="/" exact component={ArticlesList} />
-        {/* <Route path="/dashboard/:id" component={DashboardScreen} /> */}
+        <Route path="/articles/:slug" component={Article} />
+        <Route path="/admin/create-article" component={CreateArticle} />
       </Switch>
     </div>
   );

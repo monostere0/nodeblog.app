@@ -35,7 +35,11 @@ export const handler: Handler = async (
       return createResponse(404, 'Article not found.');
     }
 
-    return createResponse(200, unmarshallDynamoResults<Article>(results)[0]);
+    // Restore special characters
+    const article = unmarshallDynamoResults<Article>(results)[0];
+    article.content = unescape(article.content);
+
+    return createResponse(200, article);
   } catch (error) {
     log.error(error);
     return createResponse(400, 'An error has occurred.');
