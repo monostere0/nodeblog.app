@@ -1,14 +1,22 @@
 import React from 'react';
-import { H1, Spinner } from '@blueprintjs/core';
-import relativeDate from 'relative-date';
-import api from '../../lib/api';
 import { Link } from 'react-router-dom';
+import { StyleSheet, css } from 'aphrodite';
+
+import api from '../../lib/api';
+import Loader from './loader';
+import ArticleContainer, { Article } from './articleContainer';
+
+const styles = StyleSheet.create({
+  link: {
+    marginTop: '1rem',
+  },
+});
 
 const ArticlesList: React.FC = () => {
-  const [articles, setArticles] = React.useState([]);
+  const [articles, setArticles] = React.useState<Article[]>([]);
 
   const getArticles = async () => {
-    setArticles(await api.getArticles());
+    setArticles((await api.getArticles()) as Article[]);
   };
 
   React.useEffect(() => {
@@ -16,41 +24,17 @@ const ArticlesList: React.FC = () => {
   }, []);
 
   if (articles.length === 0) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '50vh',
-        }}
-      >
-        <Spinner />
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
     <section>
-      {articles.map((article: Record<any, any>) => (
-        <article
-          style={{
-            borderBottom: 'dashed 1px lightgray',
-            padding: '2rem 0',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-          key={article.id}
-        >
-          <H1 style={{ color: 'rebeccapurple' }}>{article.title}</H1>
-          <p>
-            Written by <em>{article.authorName} </em>
-            {relativeDate(new Date(article.date))}
-          </p>
-          <Link style={{ marginTop: '1rem' }} to={`/articles/${article.slug}`}>
+      {articles.map((article: Article) => (
+        <ArticleContainer article={article}>
+          <Link className={css(styles.link)} to={`/articles/${article.slug}`}>
             Read article
           </Link>
-        </article>
+        </ArticleContainer>
       ))}
     </section>
   );

@@ -1,16 +1,14 @@
 import React from 'react';
+import { StyleSheet, css } from 'aphrodite';
 
 import 'normalize.css/normalize.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 
-import { StyleSheet, css } from 'aphrodite';
-
 const styles = StyleSheet.create({
   header: {
     display: 'flex',
     alignItems: 'center',
-    // justifyContent: 'center',
     background: 'rebeccapurple',
     marginBottom: '1.45rem',
     color: 'floralwhite',
@@ -22,7 +20,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    // justifyContent: 'center',
   },
   link: {
     color: 'floralwhite',

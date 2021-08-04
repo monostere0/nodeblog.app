@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
-import App from './App';
+import App from './app';
 
-const AppRoot: React.FunctionComponent = () => (
+const AppRoot: React.FC = () => (
   <Router>
     <App />
   </Router>
