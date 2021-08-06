@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     background: 'rebeccapurple',
     marginBottom: '1.45rem',
     color: 'floralwhite',
-    height: 200,
+    height: '200px',
+    flex: 'none',
   },
   headerContainer: {
     maxWidth: 960,

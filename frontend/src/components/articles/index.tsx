@@ -7,9 +7,7 @@ import Loader from './loader';
 import ArticleContainer, { Article } from './articleContainer';
 
 const styles = StyleSheet.create({
-  root: {
-    marginBottom: '4rem',
-  },
+  root: {},
   link: {
     marginTop: '1rem',
   },

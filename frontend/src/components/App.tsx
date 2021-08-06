@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 
 const App: React.FC = () => {
   return (
-    <div>
+    <>
       <Header />
       <main className={css(styles.root)}>
         <Switch>
@@ -35,7 +35,7 @@ const App: React.FC = () => {
         </Switch>
       </main>
       <Footer />
-    </div>
+    </>
   );
 };
 

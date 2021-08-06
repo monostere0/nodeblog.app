@@ -12,6 +12,7 @@ import { Article } from '../articles/articleContainer';
 const styles = StyleSheet.create({
   root: {
     minWidth: '300px',
+    marginBottom: '1.45rem',
   },
   fillContainer: {
     width: '99.8%',

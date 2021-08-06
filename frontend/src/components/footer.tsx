@@ -10,9 +10,8 @@ import apigw from '../assets/apigw.svg';
 
 const styles = StyleSheet.create({
   root: {
-    position: 'fixed',
     width: '100vw',
-    bottom: '-.1rem',
+    marginTop: 'auto',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
