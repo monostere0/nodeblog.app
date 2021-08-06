@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
+import { Link } from 'react-router-dom';
 
 import 'normalize.css/normalize.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
@@ -20,10 +21,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
+    '@media screen and (max-width: 380px)': {
+      paddingLeft: '1rem',
+    },
   },
   link: {
     color: 'floralwhite',
-    textDecoration: 'none',
   },
   title: { margin: 0, fontSize: '3rem' },
 });
@@ -32,7 +35,9 @@ const Header: React.FC = () => (
   <header className={css(styles.header)}>
     <div className={css(styles.headerContainer)}>
       <h1 className={css(styles.title)}>
-        <span>NodeBlog.</span>
+        <Link className={css(styles.link)} to="/">
+          <span>NodeBlog.</span>
+        </Link>
       </h1>
       <span>
         Blogging that <em>really</em> matters.

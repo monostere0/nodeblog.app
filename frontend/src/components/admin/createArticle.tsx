@@ -1,9 +1,25 @@
 import * as React from 'react';
 import { Button, H1, EditableText } from '@blueprintjs/core';
 import { Editor } from '@toast-ui/react-editor';
-import api from '../../lib/api';
+import { StyleSheet, css } from 'aphrodite';
+import { useWindowWidth } from '@react-hook/window-size';
 
 import '@toast-ui/editor/dist/toastui-editor.css';
+
+import api from '../../lib/api';
+import { Article } from '../articles/articleContainer';
+
+const styles = StyleSheet.create({
+  root: {
+    minWidth: '300px',
+  },
+  fillContainer: {
+    width: '99.8%',
+  },
+  button: {
+    marginTop: '1rem',
+  },
+});
 
 const CreateArticle: React.FC = () => {
   const tuiEditorRef = React.createRef<Editor>();
@@ -11,6 +27,7 @@ const CreateArticle: React.FC = () => {
     title?: string;
     content?: string;
   }>({ title: '', content: '' });
+  const windowWidth = useWindowWidth();
 
   const saveArticle = (title?: string, content?: string) => {
     setArticle({
@@ -21,27 +38,22 @@ const CreateArticle: React.FC = () => {
   };
 
   const createArticle = () => {
-    api.createArticle(article as Record<any, any>);
+    api.createArticle(article as Article);
   };
 
   return (
-    <div>
-      <h1>Create article</h1>
-      <Button
-        text="Create post"
-        style={{ margin: '1em', alignSelf: 'center' }}
-        onClick={() => createArticle()}
-      />
-      <H1>
+    <div className={css(styles.root)}>
+      <H1 className={css(styles.fillContainer)}>
         <EditableText
+          className={css(styles.fillContainer)}
           placeholder="Click to edit the title"
           onConfirm={value => saveArticle(value)}
         />
       </H1>
       <Editor
-        initialValue="hello react editor world!"
-        previewStyle="vertical"
-        height="600px"
+        placeholder="Write your awesome markdown powered article."
+        previewStyle={windowWidth > 600 ? 'vertical' : 'tab'}
+        height="400px"
         initialEditType="markdown"
         useCommandShortcut={true}
         ref={tuiEditorRef}
@@ -51,6 +63,12 @@ const CreateArticle: React.FC = () => {
             tuiEditorRef.current!.getInstance().getMarkdown()
           );
         }}
+      />
+      <Button
+        icon="add"
+        text="Save post"
+        className={css(styles.button)}
+        onClick={() => createArticle()}
       />
     </div>
   );

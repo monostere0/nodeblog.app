@@ -7,6 +7,9 @@ import Loader from './loader';
 import ArticleContainer, { Article } from './articleContainer';
 
 const styles = StyleSheet.create({
+  root: {
+    marginBottom: '4rem',
+  },
   link: {
     marginTop: '1rem',
   },
@@ -28,9 +31,9 @@ const ArticlesList: React.FC = () => {
   }
 
   return (
-    <section>
+    <section className={css(styles.root)}>
       {articles.map((article: Article) => (
-        <ArticleContainer article={article}>
+        <ArticleContainer key={article.id} article={article}>
           <Link className={css(styles.link)} to={`/articles/${article.slug}`}>
             Read article
           </Link>

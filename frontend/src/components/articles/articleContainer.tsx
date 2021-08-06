@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     padding: '2rem 0',
     display: 'flex',
     flexDirection: 'column',
+    ':last-of-type': {
+      border: 'none',
+    },
   },
   title: {
     color: 'rebeccapurple',
