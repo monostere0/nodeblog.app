@@ -25,7 +25,7 @@ const ArticlesList: React.FC = () => {
   }, []);
 
   if (articles.length === 0) {
-    return <Loader />;
+    return <Loader skeletonsCount={2} />;
   }
 
   return (
