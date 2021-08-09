@@ -6,7 +6,7 @@ import gfm from 'remark-gfm';
 import breaks from 'remark-breaks';
 
 import api from '../../lib/api';
-import Loader from './loader';
+import Loader from './skeletonLoader';
 import ArticleContainer, { Article as IArticle } from './articleContainer';
 
 const Article: React.FC<RouteComponentProps<Record<string, string>>> = ({

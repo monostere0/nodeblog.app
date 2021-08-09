@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { StyleSheet, css } from 'aphrodite';
 
 import api from '../../lib/api';
-import Loader from './loader';
+import Loader from './skeletonLoader';
 import ArticleContainer, { Article } from './articleContainer';
 
 const styles = StyleSheet.create({
@@ -25,7 +25,7 @@ const ArticlesList: React.FC = () => {
   }, []);
 
   if (articles.length === 0) {
-    return <Loader skeletonsCount={2} />;
+    return <Loader sectionsCount={2} />;
   }
 
   return (

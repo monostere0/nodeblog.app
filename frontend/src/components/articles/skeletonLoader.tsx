@@ -18,12 +18,12 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-  skeletonsCount?: number;
+  sectionsCount?: number;
 }
 
-const Loader: React.FC<Props> = ({ skeletonsCount = 1 }) => (
+const Loader: React.FC<Props> = ({ sectionsCount = 1 }) => (
   <div>
-    {Array.from({ length: skeletonsCount }).map((_, i) => (
+    {Array.from({ length: sectionsCount }).map((_, i) => (
       <article key={i}>
         <h1 className={classnames(css(styles.title), Classes.SKELETON)}>
           This content
