@@ -17,7 +17,7 @@ import apigw from '../assets/apigw.svg';
 const styles = StyleSheet.create({
   root: {
     padding: '0 5rem',
-    '@media screen and (max-width: 380px)': {
+    '@media screen and (max-device-width: 480px)': {
       padding: '0 1rem',
     },
   },

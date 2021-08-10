@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    '@media screen and (max-width: 380px)': {
+    '@media screen and (max-device-width: 480px)': {
       paddingLeft: '1rem',
     },
   },
