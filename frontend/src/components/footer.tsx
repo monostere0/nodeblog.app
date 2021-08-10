@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: '.5rem',
-    backgroundColor: 'rebeccapurple',
+    backgroundColor: process.env.REACT_APP_FOREGROUND_COLOR,
   },
   description: {
-    color: 'floralwhite',
+    color: process.env.REACT_APP_BACKGROUND_COLOR,
     fontSize: '.65rem',
     marginRight: '.2rem',
   },

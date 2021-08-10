@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
   },
   title: {
-    color: 'rebeccapurple',
+    color: process.env.REACT_APP_FOREGROUND_COLOR,
   },
 });
 

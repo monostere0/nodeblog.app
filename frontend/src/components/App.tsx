@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     '@media screen and (max-device-width: 480px)': {
       padding: '0 1rem',
     },
+    backgroundColor: process.env.REACT_APP_BACKGROUND_COLOR,
   },
 });
 

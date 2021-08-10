@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     background: 'rebeccapurple',
     marginBottom: '1.45rem',
-    color: 'floralwhite',
+    color: process.env.REACT_APP_BACKGROUND_COLOR,
     height: '200px',
     flex: 'none',
   },
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
   },
   link: {
-    color: 'floralwhite',
+    color: process.env.REACT_APP_BACKGROUND_COLOR,
   },
   title: { margin: 0, fontSize: '3rem' },
 });
