@@ -3,6 +3,7 @@ import * as cdk from '@aws-cdk/core';
 import DatabaseStack from './database';
 import LambdasStack from './lambdas';
 import ApiGatewayStack from './gateway';
+import S3DeployStack from './s3';
 
 const DEPLOY_REGION = 'eu-central-1';
 
@@ -23,6 +24,11 @@ function main() {
   new ApiGatewayStack(app, 'NodeBlog-ApiGwStack', {
     stackName: 'NodeBlog-ApiGwStack',
     lambdas: lambdasStack.lambdas,
+    env: { region: DEPLOY_REGION },
+  });
+
+  new S3DeployStack(app, 'NodeBlog-WebsiteHostBucketStack', {
+    stackName: 'NodeBlog-WebsiteHostBucketStack',
     env: { region: DEPLOY_REGION },
   });
 

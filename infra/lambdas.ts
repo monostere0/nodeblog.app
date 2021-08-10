@@ -63,7 +63,7 @@ export default class LambdasStack extends cdk.Stack {
     return new NodejsFunction(this, name, {
       functionName: name,
       awsSdkConnectionReuse: true,
-      entry: join(__dirname, '..', 'src', fileName),
+      entry: join(__dirname, '..', 'backend', 'src', fileName),
       bundling: {
         externalModules: ['aws-sdk'],
       },

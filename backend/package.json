@@ -1,6 +1,6 @@
 {
-  "name": "cloud-blog-server",
-  "version": "1.0.0",
+  "name": "node-blog-backend",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,19 +11,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@aws-cdk/aws-apigateway": "^1.116.0",
-    "@aws-cdk/aws-dynamodb": "^1.116.0",
-    "@aws-cdk/aws-lambda": "^1.116.0",
-    "@aws-cdk/aws-lambda-nodejs": "^1.116.0",
-    "@aws-cdk/aws-s3": "^1.116.0",
-    "@aws-cdk/core": "^1.116.0",
     "@types/aws-lambda": "^8.10.81",
     "@types/jest": "^26.0.24",
     "@types/lambda-log": "^2.2.1",
     "@types/node": "^16.4.6",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
-    "aws-cdk": "^1.116.0",
     "eslint": "^7.31.0",
     "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-node": "^11.1.0",
