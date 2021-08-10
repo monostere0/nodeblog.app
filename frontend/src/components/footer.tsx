@@ -63,8 +63,14 @@ const footerIcons: { icon: string; label: string }[] = [
 const Footer: React.FC = () => (
   <footer className={css(styles.root)}>
     <small className={css(styles.description)}>Powered by</small>
-    {footerIcons.map(({ icon, label }) => (
-      <img src={icon} className={css(styles.icon)} alt={label} title={label} />
+    {footerIcons.map(({ icon, label }, index) => (
+      <img
+        key={index}
+        src={icon}
+        className={css(styles.icon)}
+        alt={label}
+        title={label}
+      />
     ))}
   </footer>
 );
