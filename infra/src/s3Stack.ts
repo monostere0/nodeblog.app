@@ -26,7 +26,7 @@ export default class S3DeployStack extends cdk.Stack {
       {
         sources: [
           s3Deployment.Source.asset(
-            path.join(__dirname, '..', 'frontend', 'build')
+            path.join(__dirname, '..', '..', 'frontend', 'build')
           ),
         ],
         destinationKeyPrefix: '/',

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "synth": "cdk synth",
-    "start": "cdk deploy --all"
+    "synth": "cd src && cdk synth --all && cdk ..",
+    "start": "cd src && cdk deploy --all && cd .."
   },
   "author": "",
   "license": "ISC",
