@@ -4,6 +4,7 @@ import DatabaseStack from './database';
 import LambdasStack from './lambdas';
 import ApiGatewayStack from './gateway';
 import S3DeployStack from './s3';
+import Route53Stack from './route53';
 
 const DEPLOY_REGION = 'eu-central-1';
 
@@ -27,8 +28,18 @@ function main() {
     env: { region: DEPLOY_REGION },
   });
 
-  new S3DeployStack(app, 'NodeBlog-WebsiteHostBucketStack', {
-    stackName: 'NodeBlog-WebsiteHostBucketStack',
+  const s3DeployStack = new S3DeployStack(
+    app,
+    'NodeBlog-WebsiteHostBucketStack',
+    {
+      stackName: 'NodeBlog-WebsiteHostBucketStack',
+      env: { region: DEPLOY_REGION },
+    }
+  );
+
+  new Route53Stack(app, 'NodeBlog-Route53Stack', {
+    stackName: 'NodeBlog-Route53Stack',
+    hostedBucket: s3DeployStack.bucket,
     env: { region: DEPLOY_REGION },
   });
 

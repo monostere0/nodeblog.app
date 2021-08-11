@@ -3,6 +3,8 @@ import * as cdk from '@aws-cdk/core';
 import { Bucket } from '@aws-cdk/aws-s3';
 import * as s3Deployment from '@aws-cdk/aws-s3-deployment';
 
+import { DOMAIN_NAME } from './route53';
+
 export default class S3DeployStack extends cdk.Stack {
   bucket: Bucket;
 
@@ -11,10 +13,8 @@ export default class S3DeployStack extends cdk.Stack {
 
     this.bucket = new Bucket(this, 'NodeBlog-WebsiteHostBucket', {
       publicReadAccess: true,
-      bucketName: `nodeblogwebsite-${cdk.Stack.of(this).region}-${
-        cdk.Stack.of(this).account
-      }`,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      bucketName: DOMAIN_NAME,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
       versioned: false,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',

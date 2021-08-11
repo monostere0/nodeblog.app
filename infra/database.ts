@@ -12,18 +12,21 @@ export default class DatabaseStack extends cdk.Stack {
 
     this.tables = {
       usersTable: this.createDynamoTable('NodeBlog-Users'),
-      postsTable: this.createDynamoTable('NodeBlog-Posts'),
+      postsTable: this.createDynamoTable('NodeBlog-Posts', true),
     };
   }
 
-  private createDynamoTable(tableName: string): dynamodb.Table {
+  private createDynamoTable(
+    tableName: string,
+    shouldBeRetained?: boolean
+  ): dynamodb.Table {
     return new dynamodb.Table(this, tableName, {
       partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
       tableName,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-
-      // Obviously this shouldn't be done in prod
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      removalPolicy: shouldBeRetained
+        ? cdk.RemovalPolicy.RETAIN
+        : cdk.RemovalPolicy.DESTROY,
     });
   }
 }

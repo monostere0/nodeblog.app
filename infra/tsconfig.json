@@ -5,13 +5,8 @@
     "resolveJsonModule": true,
     "target": "ES2017",
     "outDir": "build",
-    "types": [
-      "node",
-      "jest"
-    ],
+    "types": ["node"],
     "esModuleInterop": true
   },
-  "exclude": [
-    "infra"
-  ]
+  "exclude": ["cdk.out"]
 }
