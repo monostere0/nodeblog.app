@@ -3,7 +3,7 @@ import * as cdk from '@aws-cdk/core';
 import { Bucket } from '@aws-cdk/aws-s3';
 import * as s3Deployment from '@aws-cdk/aws-s3-deployment';
 
-import { DOMAIN_NAME } from './route53';
+import { DOMAIN_NAME } from './route53Stack';
 
 export default class S3DeployStack extends cdk.Stack {
   bucket: Bucket;

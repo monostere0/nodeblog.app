@@ -1,10 +1,10 @@
 import * as cdk from '@aws-cdk/core';
 
-import DatabaseStack from './database';
-import LambdasStack from './lambdas';
-import ApiGatewayStack from './gateway';
-import S3DeployStack from './s3';
-import Route53Stack from './route53';
+import DatabaseStack from './dynamoStack';
+import LambdasStack from './lambdasStack';
+import ApiGatewayStack from './apiGatewayStack';
+import S3DeployStack from './s3Stack';
+import Route53Stack from './route53Stack';
 
 const DEPLOY_REGION = 'eu-central-1';
 
