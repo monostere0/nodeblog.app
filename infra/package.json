@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "synth": "cd src && cdk synth --all && cdk ..",
-    "start": "cd src && cdk deploy --all && cd ..",
-    "start:website": "cd src && cdk deploy NodeBlog-WebsiteHostBucketStack && cd .."
+    "synth:all": "cd src && cdk synth --all && cdk ..",
+    "deploy:all": "cd src && cdk deploy --all && cd ..",
+    "deploy:website": "cd src && cdk deploy NodeBlog-WebsiteHostBucketStack NodeBlog-CloudFrontStack && cd ..",
+    "deploy:api": "cd src && cd deploy NodeBlog-DatabaseStack NodeBlog-LambdasStack NodeBlog-ApiGwStack"
   },
   "author": "",
   "license": "ISC",

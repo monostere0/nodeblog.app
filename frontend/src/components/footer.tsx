@@ -7,6 +7,9 @@ import lambda from '../assets/lambda.svg';
 import dynamo from '../assets/dynamodb.svg';
 import s3 from '../assets/s3.svg';
 import apigw from '../assets/apigw.svg';
+import cdk from '../assets/cdk.svg';
+import cloudfront from '../assets/cloudfront.svg';
+import node from '../assets/node.png';
 
 const styles = StyleSheet.create({
   root: {
@@ -36,15 +39,27 @@ const styles = StyleSheet.create({
 const footerIcons: { icon: string; label: string }[] = [
   {
     icon: react,
-    label: 'React JS',
+    label: 'React',
+  },
+  {
+    icon: node,
+    label: 'Node',
   },
   {
     icon: blueprint,
-    label: 'Blueprint JS',
+    label: 'Blueprint',
+  },
+  {
+    icon: cdk,
+    label: 'Amazon CDK',
   },
   {
     icon: s3,
     label: 'Amazon S3',
+  },
+  {
+    icon: cloudfront,
+    label: 'Amazon CloudFront',
   },
   {
     icon: lambda,

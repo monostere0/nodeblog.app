@@ -5,7 +5,8 @@ import * as cdk from '@aws-cdk/core';
 import DatabaseStack from './dynamoStack';
 import LambdasStack from './lambdasStack';
 import ApiGatewayStack from './apiGatewayStack';
-import S3DeployStack from './s3Stack';
+import S3WebsiteStack from './s3WebsiteStack';
+import S3DeploymentStack from './s3DeploymentStack';
 import HostedZoneStack from './hostedZoneStack';
 import ACMStack from './acmStack';
 import CloudFrontStack from './cloudFrontStack';
@@ -61,18 +62,31 @@ function main() {
     hostedZone: hostedZoneStack.hostedZone,
   });
 
-  const s3DeployStack = stackFactory<S3DeployStack>(
-    S3DeployStack,
+  const s3WebsiteStack = stackFactory<S3WebsiteStack>(
+    S3WebsiteStack,
     'NodeBlog-WebsiteHostBucketStack',
     { bucketName: DOMAIN_NAME }
   );
 
-  stackFactory<CloudFrontStack>(CloudFrontStack, 'NodeBlog-CloudFrontStack', {
-    certificate: websiteAcm.certificate,
-    hostedBucket: s3DeployStack.bucket,
-    domainName: DOMAIN_NAME,
-    hostedZone: hostedZoneStack.hostedZone,
-  });
+  const cfStack = stackFactory<CloudFrontStack>(
+    CloudFrontStack,
+    'NodeBlog-CloudFrontStack',
+    {
+      certificate: websiteAcm.certificate,
+      hostedBucket: s3WebsiteStack.bucket,
+      domainName: DOMAIN_NAME,
+      hostedZone: hostedZoneStack.hostedZone,
+    }
+  );
+
+  stackFactory<S3DeploymentStack>(
+    S3DeploymentStack,
+    'NodeBlog-NodeBlog-WebsiteHostBucketDeploymentStack',
+    {
+      bucket: s3WebsiteStack.bucket,
+      cloudfrontDistribution: cfStack.distribution,
+    }
+  );
 
   app.synth();
 }
