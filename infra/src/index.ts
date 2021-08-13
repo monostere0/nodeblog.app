@@ -71,22 +71,26 @@ function main() {
     { bucketName: DOMAIN_NAME }
   );
 
+  const cloudfrontStack = stackFactory<CloudFrontStack>(
+    CloudFrontStack,
+    'NodeBlog-CloudFrontStack',
+    {
+      certificate: websiteAcm.certificate,
+      hostedBucket: s3DeployStack.bucket,
+      domainName: DOMAIN_NAME,
+      oai: s3DeployStack.cloudFrontOAI,
+    }
+  );
+
   stackFactory<Route53AliasesStack>(
     Route53AliasesStack,
     'NodeBlog-Route53AliasesStack',
     {
-      hostedBucket: s3DeployStack.bucket,
+      cloudfrontDistribution: cloudfrontStack.distribution,
       hostedZone: hostedZoneStack.hostedZone,
       apiGateway: apiGwStack.restApi,
     }
   );
-
-  stackFactory<CloudFrontStack>(CloudFrontStack, 'NodeBlog-CloudFrontStack', {
-    certificate: websiteAcm.certificate,
-    hostedBucket: s3DeployStack.bucket,
-    domainName: DOMAIN_NAME,
-    oai: s3DeployStack.cloudFrontOAI,
-  });
 
   app.synth();
 }

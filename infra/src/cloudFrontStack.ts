@@ -13,6 +13,8 @@ interface Props extends cdk.StackProps {
 }
 
 export default class CloudFrontStack extends cdk.Stack {
+  distribution: cf.CloudFrontWebDistribution;
+
   constructor(scope: cdk.Construct, id: string, props?: Props) {
     super(scope, id, props);
 
@@ -38,23 +40,27 @@ export default class CloudFrontStack extends cdk.Stack {
       }
     );
 
-    new cf.CloudFrontWebDistribution(this, 'NodeBlog-CFWebDistribution', {
-      viewerCertificate,
-      originConfigs: [
-        {
-          s3OriginSource: {
-            s3BucketSource: props.hostedBucket,
-            originAccessIdentity: props.oai,
-          },
-          behaviors: [
-            {
-              isDefaultBehavior: true,
-              compress: true,
-              allowedMethods: cf.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+    this.distribution = new cf.CloudFrontWebDistribution(
+      this,
+      'NodeBlog-CFWebDistribution',
+      {
+        viewerCertificate,
+        originConfigs: [
+          {
+            s3OriginSource: {
+              s3BucketSource: props.hostedBucket,
+              originAccessIdentity: props.oai,
             },
-          ],
-        },
-      ],
-    });
+            behaviors: [
+              {
+                isDefaultBehavior: true,
+                compress: true,
+                allowedMethods: cf.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+              },
+            ],
+          },
+        ],
+      }
+    );
   }
 }
