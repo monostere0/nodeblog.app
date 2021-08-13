@@ -5,14 +5,19 @@
   "main": "index.ts",
   "scripts": {
     "synth": "cd src && cdk synth --all && cdk ..",
-    "start": "cd src && cdk deploy --all && cd .."
+    "start": "cd src && cdk deploy --all && cd ..",
+    "start:website": "cd src && cdk deploy NodeBlog-WebsiteHostBucketStack && cd .."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@aws-cdk/aws-apigateway": "^1.118.0",
     "@aws-cdk/aws-certificatemanager": "^1.118.0",
+    "@aws-cdk/aws-cloudfront": "^1.118.0",
+    "@aws-cdk/aws-cloudfront-origins": "^1.118.0",
+    "@aws-cdk/aws-cloudwatch": "^1.118.0",
     "@aws-cdk/aws-dynamodb": "^1.118.0",
+    "@aws-cdk/aws-iam": "^1.118.0",
     "@aws-cdk/aws-lambda": "^1.118.0",
     "@aws-cdk/aws-lambda-nodejs": "^1.118.0",
     "@aws-cdk/aws-route53": "^1.118.0",
@@ -24,6 +29,7 @@
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
     "aws-cdk": "^1.118.0",
+    "dotenv": "^10.0.0",
     "esbuild": "^0.12.19",
     "eslint": "^7.31.0",
     "eslint-plugin-jest": "^24.4.0",

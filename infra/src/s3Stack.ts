@@ -1,24 +1,48 @@
 import path from 'path';
 import * as cdk from '@aws-cdk/core';
-import { Bucket } from '@aws-cdk/aws-s3';
 import * as s3Deployment from '@aws-cdk/aws-s3-deployment';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as cf from '@aws-cdk/aws-cloudfront';
+import * as iam from '@aws-cdk/aws-iam';
 
-import { DOMAIN_NAME } from './route53Stack';
+interface Props extends cdk.StackProps {
+  bucketName: string;
+}
 
 export default class S3DeployStack extends cdk.Stack {
-  bucket: Bucket;
+  bucket: s3.Bucket;
+  cloudFrontOAI: cf.OriginAccessIdentity;
 
-  constructor(scope: cdk.Construct, id: string, props: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props: Props) {
     super(scope, id, props);
 
-    this.bucket = new Bucket(this, 'NodeBlog-WebsiteHostBucket', {
-      publicReadAccess: true,
-      bucketName: DOMAIN_NAME,
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    this.bucket = new s3.Bucket(this, 'NodeBlog-WebsiteHostBucket', {
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      bucketName: props.bucketName,
       versioned: false,
       websiteIndexDocument: 'index.html',
+      // Small trick to have React router working
       websiteErrorDocument: 'index.html',
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
     });
+
+    this.cloudFrontOAI = new cf.OriginAccessIdentity(this, 'NodeBlog-OAI', {
+      comment: `OAI for ${props.bucketName}`,
+    });
+
+    this.bucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [this.bucket.arnForObjects('*')],
+        principals: [
+          new iam.CanonicalUserPrincipal(
+            this.cloudFrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId
+          ),
+        ],
+      })
+    );
 
     new s3Deployment.BucketDeployment(
       this,

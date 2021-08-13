@@ -1,6 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 import * as apigw from '@aws-cdk/aws-apigateway';
 import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
+import { ICertificate } from '@aws-cdk/aws-certificatemanager';
 
 interface Props extends cdk.StackProps {
   lambdas: {
@@ -8,6 +9,8 @@ interface Props extends cdk.StackProps {
     getAllArticles: NodejsFunction;
     getArticle: NodejsFunction;
   };
+  certificate: ICertificate;
+  domainName: string;
 }
 
 export default class ApiGatewayStack extends cdk.Stack {
@@ -20,6 +23,10 @@ export default class ApiGatewayStack extends cdk.Stack {
       restApiName: 'NodeBlog-ApiGateway',
       defaultCorsPreflightOptions: {
         allowOrigins: apigw.Cors.ALL_ORIGINS,
+      },
+      domainName: {
+        certificate: props.certificate,
+        domainName: props.domainName,
       },
     });
 

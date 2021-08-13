@@ -1,5 +1,4 @@
-const BASE_URL =
-  'https://xsbnh3bks5.execute-api.eu-central-1.amazonaws.com/prod';
+const BASE_URL = 'https://api.nodeblog.app';
 
 class API {
   async getArticles(): Promise<any> {

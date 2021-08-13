@@ -3,5 +3,6 @@
     "appName": "node-blog",
     "region": "eu-central-1"
   },
-  "app": "ts-node index"
+  "app": "ts-node index",
+  "requireApproval": "never"
 }
