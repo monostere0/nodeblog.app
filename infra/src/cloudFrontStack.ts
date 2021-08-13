@@ -1,6 +1,8 @@
 import * as cdk from '@aws-cdk/core';
 import * as cf from '@aws-cdk/aws-cloudfront';
 import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
+import * as route53 from '@aws-cdk/aws-route53';
+import { CloudFrontTarget } from '@aws-cdk/aws-route53-targets';
 
 import { IBucket } from '@aws-cdk/aws-s3';
 import { ICertificate } from '@aws-cdk/aws-certificatemanager';
@@ -9,11 +11,10 @@ interface Props extends cdk.StackProps {
   hostedBucket: IBucket;
   certificate: ICertificate;
   domainName: string;
+  hostedZone: route53.IHostedZone;
 }
 
 export default class CloudFrontStack extends cdk.Stack {
-  distribution: cf.CloudFrontWebDistribution;
-
   constructor(scope: cdk.Construct, id: string, props?: Props) {
     super(scope, id, props);
 
@@ -39,7 +40,7 @@ export default class CloudFrontStack extends cdk.Stack {
       }
     );
 
-    this.distribution = new cf.CloudFrontWebDistribution(
+    const distribution = new cf.CloudFrontWebDistribution(
       this,
       'NodeBlog-CFWebDistribution',
       {
@@ -69,5 +70,12 @@ export default class CloudFrontStack extends cdk.Stack {
         ],
       }
     );
+
+    new route53.ARecord(this, 'NodeBlog-WebsiteTargetRecord', {
+      zone: props.hostedZone,
+      target: route53.RecordTarget.fromAlias(
+        new CloudFrontTarget(distribution)
+      ),
+    });
   }
 }

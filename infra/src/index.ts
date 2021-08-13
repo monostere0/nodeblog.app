@@ -7,7 +7,6 @@ import LambdasStack from './lambdasStack';
 import ApiGatewayStack from './apiGatewayStack';
 import S3DeployStack from './s3Stack';
 import HostedZoneStack from './hostedZoneStack';
-import Route53AliasesStack from './route53AliasesStack';
 import ACMStack from './acmStack';
 import CloudFrontStack from './cloudFrontStack';
 
@@ -55,15 +54,12 @@ function main() {
     }
   );
 
-  const apiGwStack = stackFactory<ApiGatewayStack>(
-    ApiGatewayStack,
-    'NodeBlog-ApiGwStack',
-    {
-      lambdas: lambdasStack.lambdas,
-      certificate: apiAcm.certificate,
-      domainName: API_DOMAIN_NAME,
-    }
-  );
+  stackFactory<ApiGatewayStack>(ApiGatewayStack, 'NodeBlog-ApiGwStack', {
+    lambdas: lambdasStack.lambdas,
+    certificate: apiAcm.certificate,
+    domainName: API_DOMAIN_NAME,
+    hostedZone: hostedZoneStack.hostedZone,
+  });
 
   const s3DeployStack = stackFactory<S3DeployStack>(
     S3DeployStack,
@@ -71,25 +67,12 @@ function main() {
     { bucketName: DOMAIN_NAME }
   );
 
-  const cloudfrontStack = stackFactory<CloudFrontStack>(
-    CloudFrontStack,
-    'NodeBlog-CloudFrontStack',
-    {
-      certificate: websiteAcm.certificate,
-      hostedBucket: s3DeployStack.bucket,
-      domainName: DOMAIN_NAME,
-    }
-  );
-
-  stackFactory<Route53AliasesStack>(
-    Route53AliasesStack,
-    'NodeBlog-Route53AliasesStack',
-    {
-      cloudfrontDistribution: cloudfrontStack.distribution,
-      hostedZone: hostedZoneStack.hostedZone,
-      apiGateway: apiGwStack.restApi,
-    }
-  );
+  stackFactory<CloudFrontStack>(CloudFrontStack, 'NodeBlog-CloudFrontStack', {
+    certificate: websiteAcm.certificate,
+    hostedBucket: s3DeployStack.bucket,
+    domainName: DOMAIN_NAME,
+    hostedZone: hostedZoneStack.hostedZone,
+  });
 
   app.synth();
 }
