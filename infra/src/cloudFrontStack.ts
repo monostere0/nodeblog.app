@@ -9,7 +9,6 @@ interface Props extends cdk.StackProps {
   hostedBucket: IBucket;
   certificate: ICertificate;
   domainName: string;
-  oai: cf.IOriginAccessIdentity;
 }
 
 export default class CloudFrontStack extends cdk.Stack {
@@ -45,11 +44,19 @@ export default class CloudFrontStack extends cdk.Stack {
       'NodeBlog-CFWebDistribution',
       {
         viewerCertificate,
+        // Needed for React router
+        errorConfigurations: [
+          {
+            errorCode: 404,
+            errorCachingMinTtl: 0,
+            responseCode: 200,
+            responsePagePath: '/index.html',
+          },
+        ],
         originConfigs: [
           {
             s3OriginSource: {
               s3BucketSource: props.hostedBucket,
-              originAccessIdentity: props.oai,
             },
             behaviors: [
               {

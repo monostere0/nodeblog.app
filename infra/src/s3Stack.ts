@@ -11,38 +11,24 @@ interface Props extends cdk.StackProps {
 
 export default class S3DeployStack extends cdk.Stack {
   bucket: s3.Bucket;
-  cloudFrontOAI: cf.OriginAccessIdentity;
 
   constructor(scope: cdk.Construct, id: string, props: Props) {
     super(scope, id, props);
 
     this.bucket = new s3.Bucket(this, 'NodeBlog-WebsiteHostBucket', {
-      publicReadAccess: false,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      publicReadAccess: true,
       bucketName: props.bucketName,
       versioned: false,
       websiteIndexDocument: 'index.html',
+
       // Small trick to have React router working
       websiteErrorDocument: 'index.html',
+
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
     });
 
-    this.cloudFrontOAI = new cf.OriginAccessIdentity(this, 'NodeBlog-OAI', {
-      comment: `OAI for ${props.bucketName}`,
-    });
-
-    this.bucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        actions: ['s3:GetObject'],
-        resources: [this.bucket.arnForObjects('*')],
-        principals: [
-          new iam.CanonicalUserPrincipal(
-            this.cloudFrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId
-          ),
-        ],
-      })
-    );
+    this.bucket.grantRead(new iam.AnyPrincipal());
 
     new s3Deployment.BucketDeployment(
       this,

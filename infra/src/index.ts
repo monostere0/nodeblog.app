@@ -78,7 +78,6 @@ function main() {
       certificate: websiteAcm.certificate,
       hostedBucket: s3DeployStack.bucket,
       domainName: DOMAIN_NAME,
-      oai: s3DeployStack.cloudFrontOAI,
     }
   );
 
