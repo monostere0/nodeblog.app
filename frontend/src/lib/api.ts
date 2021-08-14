@@ -1,15 +1,15 @@
 const BASE_URL = 'https://api.nodeblog.app';
 
 class API {
-  async getArticles(): Promise<any> {
+  public async getArticles(): Promise<any> {
     return await this.request('articles');
   }
 
-  async createArticle(body: Record<any, any>) {
+  public async createArticle(body: Record<any, any>) {
     await this.request('articles', body);
   }
 
-  async getArticle(slug: string) {
+  public async getArticle(slug: string) {
     return await this.request(`articles/${slug}`);
   }
 

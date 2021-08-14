@@ -81,7 +81,7 @@ function main() {
 
   stackFactory<S3DeploymentStack>(
     S3DeploymentStack,
-    'NodeBlog-NodeBlog-WebsiteHostBucketDeploymentStack',
+    'NodeBlog-WebsiteHostBucketDeploymentStack',
     {
       bucket: s3WebsiteStack.bucket,
       cloudfrontDistribution: cfStack.distribution,

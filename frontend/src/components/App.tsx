@@ -8,12 +8,6 @@ import ArticlesList from './articles';
 import Article from './articles/article';
 import CreateArticle from './admin/createArticle';
 
-import react from '../assets/react.svg';
-import lambda from '../assets/lambda.svg';
-import dynamo from '../assets/dynamodb.svg';
-import s3 from '../assets/s3.svg';
-import apigw from '../assets/apigw.svg';
-
 const styles = StyleSheet.create({
   root: {
     padding: '0 5rem',
