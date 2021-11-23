@@ -5,25 +5,26 @@ import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import breaks from 'remark-breaks';
 
-import api from '../../lib/api';
+import { useArticle } from '../../lib/hooks';
+import { Article as IArticle } from '../../lib/interfaces';
 import Loader from './skeletonLoader';
-import ArticleContainer, { Article as IArticle } from './articleContainer';
+import ArticleContainer from './articleContainer';
 
 const Article: React.FC<RouteComponentProps<Record<string, string>>> = ({
   match,
 }) => {
-  const [article, setArticle] = React.useState<IArticle>();
+  const {
+    data: article,
+    loading,
+    error,
+  } = useArticle(match.params.slug as string);
 
-  const getArticle = async () => {
-    setArticle((await api.getArticle(match.params.slug as string)) as IArticle);
-  };
-
-  React.useEffect(() => {
-    getArticle();
-  }, []);
-
-  if (article === undefined) {
+  if (loading) {
     return <Loader />;
+  }
+
+  if (error || article === undefined) {
+    return null;
   }
 
   return (

@@ -2,9 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { StyleSheet, css } from 'aphrodite';
 
-import api from '../../lib/api';
 import Loader from './skeletonLoader';
-import ArticleContainer, { Article } from './articleContainer';
+import ArticleContainer from './articleContainer';
+
+import { useArticles } from '../../lib/hooks';
+import { Article } from '../../lib/interfaces';
 
 const styles = StyleSheet.create({
   root: {},
@@ -14,18 +16,14 @@ const styles = StyleSheet.create({
 });
 
 const ArticlesList: React.FC = () => {
-  const [articles, setArticles] = React.useState<Article[]>([]);
+  const { data: articles, error, loading } = useArticles();
 
-  const getArticles = async () => {
-    setArticles((await api.getArticles()) as Article[]);
-  };
-
-  React.useEffect(() => {
-    getArticles();
-  }, []);
-
-  if (articles.length === 0) {
+  if (loading) {
     return <Loader sectionsCount={2} />;
+  }
+
+  if (error) {
+    return null;
   }
 
   return (

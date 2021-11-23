@@ -3,14 +3,7 @@ import { H1 } from '@blueprintjs/core';
 import relativeDate from 'relative-date';
 import { StyleSheet, css } from 'aphrodite';
 
-export interface Article {
-  id: string;
-  authorName: string;
-  title: string;
-  content: string;
-  date: string;
-  slug: string;
-}
+import { Article } from '../../lib/interfaces';
 
 interface Props {
   article: Article;

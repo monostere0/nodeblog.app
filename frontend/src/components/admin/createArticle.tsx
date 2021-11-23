@@ -1,5 +1,14 @@
-import * as React from 'react';
-import { Button, H1, EditableText } from '@blueprintjs/core';
+import React, { useEffect } from 'react';
+import {
+  Button,
+  H1,
+  EditableText,
+  Toast,
+  Toaster,
+  Position,
+  Intent,
+  IToaster,
+} from '@blueprintjs/core';
 import { Editor } from '@toast-ui/react-editor';
 import { StyleSheet, css } from 'aphrodite';
 import { useWindowWidth } from '@react-hook/window-size';
@@ -7,7 +16,7 @@ import { useWindowWidth } from '@react-hook/window-size';
 import '@toast-ui/editor/dist/toastui-editor.css';
 
 import api from '../../lib/api';
-import { Article } from '../articles/articleContainer';
+import { Article } from '../../lib/interfaces';
 
 const styles = StyleSheet.create({
   root: {
@@ -23,6 +32,7 @@ const styles = StyleSheet.create({
 });
 
 const CreateArticle: React.FC = () => {
+  const toaster = React.createRef<Toaster>();
   const tuiEditorRef = React.createRef<Editor>();
   const [article, setArticle] = React.useState<{
     title?: string;
@@ -39,7 +49,23 @@ const CreateArticle: React.FC = () => {
   };
 
   const createArticle = () => {
-    api.createArticle(article as Article);
+    try {
+      api.createArticle(article as Article);
+      (toaster.current as Toaster).show({
+        message: 'Succesfully created your post.',
+        intent: Intent.SUCCESS,
+        timeout: 1000,
+        onDismiss: () => {
+          alert(1);
+        },
+      });
+    } catch (error) {
+      (toaster.current as Toaster).show({
+        message: 'Could not create post.',
+        intent: Intent.DANGER,
+        timeout: 1000,
+      });
+    }
   };
 
   return (
@@ -71,6 +97,13 @@ const CreateArticle: React.FC = () => {
         className={css(styles.button)}
         onClick={() => createArticle()}
       />
+      <Toaster
+        canEscapeKeyClear
+        position={Position.TOP}
+        usePortal
+        maxToasts={2}
+        ref={toaster}
+      ></Toaster>
     </div>
   );
 };
