@@ -1,15 +1,14 @@
-import * as cdk from '@aws-cdk/core';
-import * as route53 from '@aws-cdk/aws-route53';
+import { App, Stack, StackProps, aws_route53 as route53 } from 'aws-cdk-lib';
 
-interface Props extends cdk.StackProps {
+interface Props extends StackProps {
   domainName: string;
 }
 
-export default class HostedZoneStack extends cdk.Stack {
+export default class HostedZoneStack extends Stack {
   public hostedZone: route53.IHostedZone;
 
-  constructor(scope: cdk.Construct, id: string, props?: Props) {
-    super(scope, id, props);
+  constructor(app: App, id: string, props?: Props) {
+    super(app, id, props);
 
     this.hostedZone = route53.HostedZone.fromHostedZoneAttributes(
       this,

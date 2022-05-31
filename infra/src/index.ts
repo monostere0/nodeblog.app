@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '../.env' });
 
-import * as cdk from '@aws-cdk/core';
+import { App, Stack } from 'aws-cdk-lib';
 
 import DatabaseStack from './dynamoStack';
 import LambdasStack from './lambdasStack';
@@ -15,7 +15,7 @@ const CLOUDFRONT_CERT_REGION = 'us-east-1';
 const DOMAIN_NAME = 'nodeblog.app';
 const API_DOMAIN_NAME = 'api.nodeblog.app';
 
-const app = new cdk.App();
+const app = new App();
 
 function main() {
   const hostedZoneStack = stackFactory<HostedZoneStack>(
@@ -92,11 +92,11 @@ function main() {
 }
 
 function stackFactory<T>(
-  Stack: typeof cdk.Stack,
+  AWSStack: typeof Stack,
   stackName: string,
   stackParams?: Record<string, unknown>
 ): T {
-  return new Stack(app, stackName, {
+  return new AWSStack(app, stackName, {
     stackName,
     env: {
       account: process.env.CDK_DEPLOY_ACCOUNT,

@@ -1,14 +1,19 @@
-import * as cdk from '@aws-cdk/core';
-import * as dynamodb from '@aws-cdk/aws-dynamodb';
+import {
+  App,
+  Stack,
+  StackProps,
+  aws_dynamodb as dynamodb,
+  RemovalPolicy,
+} from 'aws-cdk-lib';
 
-export default class DatabaseStack extends cdk.Stack {
+export default class DatabaseStack extends Stack {
   public tables: {
     usersTable: dynamodb.Table;
     postsTable: dynamodb.Table;
   };
 
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+  constructor(app: App, id: string, props?: StackProps) {
+    super(app, id, props);
 
     this.tables = {
       usersTable: this.createDynamoTable('NodeBlog-Users'),
@@ -25,8 +30,8 @@ export default class DatabaseStack extends cdk.Stack {
       tableName,
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy: shouldBeRetained
-        ? cdk.RemovalPolicy.RETAIN
-        : cdk.RemovalPolicy.DESTROY,
+        ? RemovalPolicy.RETAIN
+        : RemovalPolicy.DESTROY,
     });
   }
 }

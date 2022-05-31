@@ -1,16 +1,21 @@
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as iam from '@aws-cdk/aws-iam';
+import {
+  App,
+  Stack,
+  StackProps,
+  aws_s3 as s3,
+  aws_iam as iam,
+  RemovalPolicy,
+} from 'aws-cdk-lib';
 
-interface Props extends cdk.StackProps {
+interface Props extends StackProps {
   bucketName: string;
 }
 
-export default class S3WebsiteStack extends cdk.Stack {
+export default class S3WebsiteStack extends Stack {
   bucket: s3.Bucket;
 
-  constructor(scope: cdk.Construct, id: string, props: Props) {
-    super(scope, id, props);
+  constructor(app: App, id: string, props: Props) {
+    super(app, id, props);
 
     this.bucket = new s3.Bucket(this, 'NodeBlog-WebsiteHostBucket', {
       publicReadAccess: true,
@@ -21,7 +26,7 @@ export default class S3WebsiteStack extends cdk.Stack {
       // Small trick to have React router working
       websiteErrorDocument: 'index.html',
 
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
     });
 

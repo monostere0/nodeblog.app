@@ -1,25 +1,28 @@
-import * as cdk from '@aws-cdk/core';
-import * as apigw from '@aws-cdk/aws-apigateway';
-import * as route53 from '@aws-cdk/aws-route53';
-import { ApiGateway } from '@aws-cdk/aws-route53-targets';
+import {
+  App,
+  Stack,
+  StackProps,
+  aws_apigateway as apigw,
+  aws_route53 as route53,
+  aws_route53_targets as route53Targets,
+  aws_certificatemanager as acm,
+  aws_lambda_nodejs as aln,
+} from 'aws-cdk-lib';
 
-import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
-import { ICertificate } from '@aws-cdk/aws-certificatemanager';
-
-interface Props extends cdk.StackProps {
+interface Props extends StackProps {
   lambdas: {
-    createArticle: NodejsFunction;
-    getAllArticles: NodejsFunction;
-    getArticle: NodejsFunction;
+    createArticle: aln.NodejsFunction;
+    getAllArticles: aln.NodejsFunction;
+    getArticle: aln.NodejsFunction;
   };
-  certificate: ICertificate;
+  certificate: acm.ICertificate;
   domainName: string;
   hostedZone: route53.IHostedZone;
 }
 
-export default class ApiGatewayStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: Props) {
-    super(scope, id, props);
+export default class ApiGatewayStack extends Stack {
+  constructor(app: App, id: string, props?: Props) {
+    super(app, id, props);
 
     const restApi = new apigw.RestApi(this, 'NodeBlog-ApiGateway', {
       restApiName: 'NodeBlog-ApiGateway',
@@ -42,14 +45,16 @@ export default class ApiGatewayStack extends cdk.Stack {
     new route53.ARecord(this, 'NodeBlog-ApiTargetARecord', {
       zone: props.hostedZone,
       recordName: 'api',
-      target: route53.RecordTarget.fromAlias(new ApiGateway(restApi)),
+      target: route53.RecordTarget.fromAlias(
+        new route53Targets.ApiGateway(restApi)
+      ),
     });
   }
 
   private registerMethod(
     resource: apigw.Resource,
     httpVerb: string,
-    lambda: NodejsFunction
+    lambda: aln.NodejsFunction
   ) {
     resource.addMethod(
       httpVerb,

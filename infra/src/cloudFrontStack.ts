@@ -1,31 +1,36 @@
-import * as cdk from '@aws-cdk/core';
-import * as cf from '@aws-cdk/aws-cloudfront';
-import * as cloudwatch from '@aws-cdk/aws-cloudwatch';
-import * as route53 from '@aws-cdk/aws-route53';
+import {
+  Aws,
+  App,
+  Stack,
+  StackProps,
+  aws_cloudfront as cf,
+  aws_cloudwatch as cloudwatch,
+  aws_route53 as route53,
+  aws_route53_targets as route53Targets,
+  aws_s3 as s3,
+  aws_certificatemanager as acm,
+  RemovalPolicy,
+} from 'aws-cdk-lib';
 
-import { CloudFrontTarget } from '@aws-cdk/aws-route53-targets';
-import { IBucket } from '@aws-cdk/aws-s3';
-import { ICertificate } from '@aws-cdk/aws-certificatemanager';
-
-interface Props extends cdk.StackProps {
-  hostedBucket: IBucket;
-  certificate: ICertificate;
+interface Props extends StackProps {
+  hostedBucket: s3.IBucket;
+  certificate: acm.ICertificate;
   domainName: string;
   hostedZone: route53.IHostedZone;
 }
 
-export default class CloudFrontStack extends cdk.Stack {
+export default class CloudFrontStack extends Stack {
   public distribution: cf.IDistribution;
 
-  constructor(scope: cdk.Construct, id: string, props?: Props) {
-    super(scope, id, props);
+  constructor(app: App, id: string, props?: Props) {
+    super(app, id, props);
 
     const viewerCertificate = cf.ViewerCertificate.fromAcmCertificate(
       {
         certificateArn: props.certificate.certificateArn,
         env: {
-          region: cdk.Aws.REGION,
-          account: cdk.Aws.ACCOUNT_ID,
+          region: Aws.REGION,
+          account: Aws.ACCOUNT_ID,
         },
         node: this.node,
         stack: this,
@@ -34,6 +39,7 @@ export default class CloudFrontStack extends cdk.Stack {
             namespace: 'TLS Viewer Certificate Validity',
             metricName: 'TLS Viewer Certificate Expired',
           }),
+        applyRemovalPolicy: () => RemovalPolicy.RETAIN,
       },
       {
         sslMethod: cf.SSLMethod.SNI,
@@ -76,7 +82,7 @@ export default class CloudFrontStack extends cdk.Stack {
     new route53.ARecord(this, 'NodeBlog-WebsiteTargetRecord', {
       zone: props.hostedZone,
       target: route53.RecordTarget.fromAlias(
-        new CloudFrontTarget(this.distribution)
+        new route53Targets.CloudFrontTarget(this.distribution)
       ),
     });
   }

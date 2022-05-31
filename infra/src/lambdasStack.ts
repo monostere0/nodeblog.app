@@ -1,25 +1,29 @@
-import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs';
-import { Table } from '@aws-cdk/aws-dynamodb';
+import {
+  App,
+  Stack,
+  StackProps,
+  aws_dynamodb as dynamodb,
+  aws_lambda_nodejs as aln,
+  aws_lambda as lambda,
+} from 'aws-cdk-lib';
 import { join } from 'path';
 
-interface Props extends cdk.StackProps {
+interface Props extends StackProps {
   tables: {
-    usersTable: Table;
-    postsTable: Table;
+    usersTable: dynamodb.Table;
+    postsTable: dynamodb.Table;
   };
 }
 
-export default class LambdasStack extends cdk.Stack {
+export default class LambdasStack extends Stack {
   public lambdas: {
-    createArticle: NodejsFunction;
-    getAllArticles: NodejsFunction;
-    getArticle: NodejsFunction;
+    createArticle: aln.NodejsFunction;
+    getAllArticles: aln.NodejsFunction;
+    getArticle: aln.NodejsFunction;
   };
 
-  constructor(scope: cdk.Construct, id: string, props?: Props) {
-    super(scope, id, props);
+  constructor(app: App, id: string, props?: Props) {
+    super(app, id, props);
 
     this.lambdas = {
       createArticle: this.createLambda(
@@ -59,8 +63,8 @@ export default class LambdasStack extends cdk.Stack {
     name: string,
     fileName: string,
     environment?: { [key: string]: string }
-  ): NodejsFunction {
-    return new NodejsFunction(this, name, {
+  ): aln.NodejsFunction {
+    return new aln.NodejsFunction(this, name, {
       functionName: name,
       awsSdkConnectionReuse: true,
       entry: join(__dirname, '..', '..', 'backend', 'src', fileName),

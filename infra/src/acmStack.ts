@@ -1,20 +1,23 @@
-import * as cdk from '@aws-cdk/core';
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import { IHostedZone } from '@aws-cdk/aws-route53';
-import { DnsValidatedCertificateProps } from '@aws-cdk/aws-certificatemanager';
+import {
+  StackProps,
+  Stack,
+  App,
+  aws_certificatemanager as acm,
+  aws_route53 as route53,
+} from 'aws-cdk-lib';
 
-interface Props extends cdk.StackProps {
-  hostedZoneForValidation?: IHostedZone;
+interface Props extends StackProps {
+  hostedZoneForValidation?: route53.IHostedZone;
   domainName: string;
   certificateName: string;
   region: string;
 }
 
-export default class ACMStack extends cdk.Stack {
+export default class ACMStack extends Stack {
   public certificate: acm.Certificate;
 
-  constructor(scope: cdk.Construct, id: string, props?: Props) {
-    super(scope, id, props);
+  constructor(app: App, id: string, props?: Props) {
+    super(app, id, props);
 
     const options: Record<string, unknown> = {
       domainName: props.domainName,
@@ -28,7 +31,7 @@ export default class ACMStack extends cdk.Stack {
     this.certificate = new acm.DnsValidatedCertificate(
       this,
       props.certificateName,
-      options as unknown as DnsValidatedCertificateProps
+      options as unknown as acm.DnsValidatedCertificateProps
     );
   }
 }
