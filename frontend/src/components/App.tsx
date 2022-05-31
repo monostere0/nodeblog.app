@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { StyleSheet, css } from 'aphrodite';
 
 import Header from './header';
@@ -7,6 +7,8 @@ import Footer from './footer';
 import ArticlesList from './articles';
 import Article from './articles/article';
 import CreateArticle from './admin/createArticle';
+
+import Toasts from './toasts';
 
 const styles = StyleSheet.create({
   root: {
@@ -23,11 +25,12 @@ const App: React.FC = () => {
     <>
       <Header />
       <main className={css(styles.root)}>
-        <Switch>
-          <Route path="/" exact component={ArticlesList} />
-          <Route path="/articles/:slug" component={Article} />
-          <Route path="/admin/create-article" component={CreateArticle} />
-        </Switch>
+        <Toasts />
+        <Routes>
+          <Route path="/" element={<ArticlesList />} />
+          <Route path="/articles/:slug" element={<Article />} />
+          <Route path="/admin/create-article" element={<CreateArticle />} />
+        </Routes>
       </main>
       <Footer />
     </>

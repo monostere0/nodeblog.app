@@ -1,23 +1,17 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 import { Breadcrumbs } from '@blueprintjs/core';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import breaks from 'remark-breaks';
 
 import { useArticle } from '../../lib/hooks';
-import { Article as IArticle } from '../../lib/interfaces';
 import Loader from './skeletonLoader';
 import ArticleContainer from './articleContainer';
+import { useParams } from 'react-router-dom';
 
-const Article: React.FC<RouteComponentProps<Record<string, string>>> = ({
-  match,
-}) => {
-  const {
-    data: article,
-    loading,
-    error,
-  } = useArticle(match.params.slug as string);
+const Article: React.FC<Record<string, string>> = () => {
+  const params = useParams();
+  const { data: article, loading, error } = useArticle(params.slug as string);
 
   if (loading) {
     return <Loader />;

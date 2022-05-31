@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useRef } from 'react';
 import {
   Button,
   H1,
   EditableText,
-  Toast,
   Toaster,
   Position,
   Intent,
-  IToaster,
 } from '@blueprintjs/core';
 import { Editor } from '@toast-ui/react-editor';
 import { StyleSheet, css } from 'aphrodite';
@@ -17,6 +15,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 
 import api from '../../lib/api';
 import { Article } from '../../lib/interfaces';
+import { showToast } from '../toasts';
 
 const styles = StyleSheet.create({
   root: {
@@ -32,8 +31,8 @@ const styles = StyleSheet.create({
 });
 
 const CreateArticle: React.FC = () => {
-  const toaster = React.createRef<Toaster>();
-  const tuiEditorRef = React.createRef<Editor>();
+  const toaster = useRef<Toaster>(null);
+  const tuiEditorRef = useRef<Editor>(null);
   const [article, setArticle] = React.useState<{
     title?: string;
     content?: string;
@@ -51,20 +50,9 @@ const CreateArticle: React.FC = () => {
   const createArticle = () => {
     try {
       api.createArticle(article as Article);
-      (toaster.current as Toaster).show({
-        message: 'Succesfully created your post.',
-        intent: Intent.SUCCESS,
-        timeout: 1000,
-        onDismiss: () => {
-          alert(1);
-        },
-      });
+      showToast('Succesfully created your post!', Intent.SUCCESS);
     } catch (error) {
-      (toaster.current as Toaster).show({
-        message: 'Could not create post.',
-        intent: Intent.DANGER,
-        timeout: 1000,
-      });
+      showToast('Could not create post.', Intent.DANGER);
     }
   };
 
