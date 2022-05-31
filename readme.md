@@ -10,4 +10,8 @@
 
 ### Tech stack
 
-TypeScript, React, Node, AWS (Lambda, DynamoDB, Api Gateway, ACM, Route53, S3, CloudFront)
+![](stack.png)
+
+### In order of appearance:
+
+#### React, Node, Blueprint, Amazon CDK, Amazon S3, Amazon CloudFront, Amazon Lambda, Amazon DynamoDB, Amazon API Gateway
