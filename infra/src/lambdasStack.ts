@@ -20,6 +20,7 @@ export default class LambdasStack extends Stack {
     createArticle: aln.NodejsFunction;
     getAllArticles: aln.NodejsFunction;
     getArticle: aln.NodejsFunction;
+    createWeeklyArticles: aln.NodejsFunction;
   };
 
   constructor(app: App, id: string, props?: Props) {
@@ -43,10 +44,22 @@ export default class LambdasStack extends Stack {
       getArticle: this.createLambda('NodeBlog-getArticle', 'getArticle.ts', {
         DYNAMO_TABLE: props.tables.postsTable.tableName,
       }),
+      createWeeklyArticles: this.createLambda(
+        'NodeBlog-createWeeklyArticles',
+        'createGptArticleHandler.ts',
+        {
+          REDDIT_JSON_URL: process.env.REDDIT_JSON_URL,
+          OPENAI_KEY: process.env.OPENAI_KEY,
+        }
+      ),
     };
 
     props.tables.postsTable.grant(
       this.lambdas.createArticle,
+      'dynamodb:PutItem'
+    );
+    props.tables.postsTable.grant(
+      this.lambdas.createWeeklyArticles,
       'dynamodb:PutItem'
     );
     props.tables.postsTable.grant(
@@ -67,12 +80,20 @@ export default class LambdasStack extends Stack {
     return new aln.NodejsFunction(this, name, {
       functionName: name,
       awsSdkConnectionReuse: true,
-      entry: join(__dirname, '..', '..', 'backend', 'src', fileName),
+      entry: join(
+        __dirname,
+        '..',
+        '..',
+        'backend',
+        'src',
+        'handlers',
+        fileName
+      ),
       bundling: {
         externalModules: ['aws-sdk'],
       },
       environment,
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.NODEJS_16_X,
     });
   }
 }

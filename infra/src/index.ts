@@ -10,6 +10,7 @@ import S3DeploymentStack from './s3DeploymentStack';
 import HostedZoneStack from './hostedZoneStack';
 import ACMStack from './acmStack';
 import CloudFrontStack from './cloudFrontStack';
+import SchedulerStack from './schedulerStack';
 
 const CLOUDFRONT_CERT_REGION = 'us-east-1';
 const DOMAIN_NAME = 'nodeblog.app';
@@ -76,6 +77,16 @@ function main() {
       hostedBucket: s3WebsiteStack.bucket,
       domainName: DOMAIN_NAME,
       hostedZone: hostedZoneStack.hostedZone,
+    }
+  );
+
+  const schedulerStack = stackFactory<SchedulerStack>(
+    SchedulerStack,
+    'NodeBlog-SchedulerStack',
+    {
+      lambdas: {
+        createWeeklyArticles: lambdasStack.lambdas.createWeeklyArticles,
+      },
     }
   );
 

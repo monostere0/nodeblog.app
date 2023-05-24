@@ -29,7 +29,10 @@
     "@sindresorhus/slugify": "^2.1.0",
     "aws-lambda": "^1.0.6",
     "aws-sdk": "^2.957.0",
+    "chatgpt": "^5.2.4",
     "lambda-log": "^3.0.0",
+    "node-fetch": "^3.3.1",
+    "sillyname": "^0.1.0",
     "uuid": "^8.3.2"
   }
 }
