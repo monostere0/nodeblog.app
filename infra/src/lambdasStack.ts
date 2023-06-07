@@ -5,6 +5,7 @@ import {
   aws_dynamodb as dynamodb,
   aws_lambda_nodejs as aln,
   aws_lambda as lambda,
+  Duration,
 } from 'aws-cdk-lib';
 import { join } from 'path';
 
@@ -50,6 +51,7 @@ export default class LambdasStack extends Stack {
         {
           REDDIT_JSON_URL: process.env.REDDIT_JSON_URL,
           OPENAI_KEY: process.env.OPENAI_KEY,
+          DYNAMO_TABLE: props.tables.postsTable.tableName,
         }
       ),
     };
@@ -90,10 +92,12 @@ export default class LambdasStack extends Stack {
         fileName
       ),
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk/*'],
       },
       environment,
       runtime: lambda.Runtime.NODEJS_18_X,
+      memorySize: 256,
+      timeout: Duration.minutes(3),
     });
   }
 }

@@ -2,7 +2,7 @@
   "name": "node-blog-infra",
   "version": "0.1.0",
   "description": "",
-  "main": "index.ts",
+  "type": "commonjs",
   "scripts": {
     "synth:all": "cd src && cdk synth --all && cd ..",
     "deploy:all": "cd src && cdk deploy --all && cd ..",
@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^29.5.1",
     "@types/node": "^16.4.6",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
@@ -19,6 +20,7 @@
     "aws-cdk-lib": "^2.80.0",
     "dotenv": "^10.0.0",
     "esbuild": "^0.12.19",
+    "esbuild-plugin-wasm": "^1.1.0",
     "eslint": "^7.31.0",
     "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-node": "^11.1.0",

@@ -10,5 +10,5 @@ export default async function getTopTwoRedditArticles(): Promise<
 }
 
 function getTitle(json: any, index: number) {
-  return json.data.children[index].title;
+  return json.data.children[index].data.title;
 }
