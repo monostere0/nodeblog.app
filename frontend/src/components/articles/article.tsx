@@ -3,11 +3,19 @@ import { Breadcrumbs } from '@blueprintjs/core';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import breaks from 'remark-breaks';
+import { StyleSheet, css } from 'aphrodite';
 
 import { useArticle } from '../../lib/hooks';
 import Loader from './skeletonLoader';
 import ArticleContainer from './articleContainer';
 import { useParams } from 'react-router-dom';
+
+const styles = StyleSheet.create({
+  articleImageContainer: {
+    padding: '1em',
+    textAlign: 'center',
+  },
+});
 
 const Article: React.FC<Record<string, string>> = () => {
   const params = useParams();
@@ -35,6 +43,10 @@ const Article: React.FC<Record<string, string>> = () => {
       />
       <ArticleContainer article={article}>
         <div>
+          <p className={css(styles.articleImageContainer)}>
+            <img src={`data:image/png;base64, ${article.image}`} />
+          </p>
+
           <ReactMarkdown
             remarkPlugins={[gfm, breaks]}
             children={article.content}

@@ -5,6 +5,7 @@ export interface Article {
   date: string;
   slug: string;
   authorName: string;
+  image: string;
 }
 
 export interface HookResult<T> {

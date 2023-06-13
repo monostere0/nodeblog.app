@@ -5,6 +5,7 @@ import log from 'lambda-log';
 import { unmarshallDynamoResults } from '../utils/dynamo';
 import { createResponse } from '../utils/lambda';
 import { Article } from '../interfaces';
+import { getImageBase64UrlFromBucket } from '../utils/s3';
 
 const dynamoClient = new AWS.DynamoDB();
 
@@ -38,6 +39,11 @@ export const handler: Handler = async (
     // Restore special characters
     const article = unmarshallDynamoResults<Article>(results)[0];
     article.content = unescape(article.content);
+
+    article.image = await getImageBase64UrlFromBucket(
+      process.env.IMAGES_BUCKET_NAME,
+      article.image
+    );
 
     return createResponse(200, article);
   } catch (error) {
