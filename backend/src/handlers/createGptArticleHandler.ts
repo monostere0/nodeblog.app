@@ -1,4 +1,5 @@
 import { ScheduledEvent, ScheduledHandler } from 'aws-lambda';
+import { S3 } from 'aws-sdk';
 import log from 'lambda-log';
 import slugify from '@sindresorhus/slugify';
 import generateSillyName from 'sillyname';
@@ -8,7 +9,12 @@ import createArticleFromParams from '../createArticleFromParams';
 import { Article } from '../interfaces';
 import { createResponse } from '../utils/lambda';
 import getTopTwoRedditArticles from '../utils/reddit';
-import getArticleContentFromTitle from '../utils/chatgpt';
+import {
+  getArticleContentFromTitle,
+  getArticleImageFromTitle,
+} from '../utils/openai';
+
+const s3 = new S3();
 
 export const handler: ScheduledHandler = async (
   event: ScheduledEvent
@@ -22,9 +28,18 @@ export const handler: ScheduledHandler = async (
       async (suggestedTitle) => {
         console.log('Article title:', suggestedTitle);
 
-        const articleContent = await getArticleContentFromTitle(suggestedTitle);
+        const [articleContent, articleImage] = await Promise.all([
+          getArticleContentFromTitle(suggestedTitle),
+          getArticleImageFromTitle(suggestedTitle),
+        ]);
 
-        console.log('Article Content:', articleContent);
+        await s3
+          .putObject({
+            Bucket: process.env.IMAGES_BUCKET_NAME,
+            Key: `${articleImage.title}.png`,
+            Body: articleImage.content,
+          })
+          .promise();
 
         const articleItem = {
           authorName: generateSillyName(),
@@ -32,6 +47,7 @@ export const handler: ScheduledHandler = async (
           content: escape(articleContent),
           date: new Date().toJSON(),
           slug: slugify(suggestedTitle).split('-').slice(0, 4).join('-'),
+          image: articleImage.title,
         } as Article;
 
         return await createArticleFromParams(articleItem);

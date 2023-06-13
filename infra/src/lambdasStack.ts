@@ -33,6 +33,7 @@ export default class LambdasStack extends Stack {
         'createArticle.ts',
         {
           DYNAMO_TABLE: props.tables.postsTable.tableName,
+          IMAGES_BUCKET_NAME: process.env.IMAGES_BUCKET_NAME,
         }
       ),
       getAllArticles: this.createLambda(
@@ -40,10 +41,12 @@ export default class LambdasStack extends Stack {
         'getAllArticles.ts',
         {
           DYNAMO_TABLE: props.tables.postsTable.tableName,
+          IMAGES_BUCKET_NAME: process.env.IMAGES_BUCKET_NAME,
         }
       ),
       getArticle: this.createLambda('NodeBlog-getArticle', 'getArticle.ts', {
         DYNAMO_TABLE: props.tables.postsTable.tableName,
+        IMAGES_BUCKET_NAME: process.env.IMAGES_BUCKET_NAME,
       }),
       createWeeklyArticles: this.createLambda(
         'NodeBlog-createWeeklyArticles',
@@ -52,6 +55,7 @@ export default class LambdasStack extends Stack {
           REDDIT_JSON_URL: process.env.REDDIT_JSON_URL,
           OPENAI_KEY: process.env.OPENAI_KEY,
           DYNAMO_TABLE: props.tables.postsTable.tableName,
+          IMAGES_BUCKET_NAME: process.env.IMAGES_BUCKET_NAME,
         }
       ),
     };

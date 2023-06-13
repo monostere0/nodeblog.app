@@ -4,4 +4,10 @@ export interface Article {
   date: string;
   authorName: string;
   slug: string;
+  image: string;
+}
+
+export interface ArticleImage {
+  title: string;
+  content: Buffer;
 }

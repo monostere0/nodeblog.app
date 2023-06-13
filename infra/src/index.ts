@@ -11,6 +11,7 @@ import HostedZoneStack from './hostedZoneStack';
 import ACMStack from './acmStack';
 import CloudFrontStack from './cloudFrontStack';
 import SchedulerStack from './schedulerStack';
+import S3ImagesStack from './s3ImagesStack';
 
 const CLOUDFRONT_CERT_REGION = 'us-east-1';
 const DOMAIN_NAME = 'nodeblog.app';
@@ -80,15 +81,16 @@ function main() {
     }
   );
 
-  const schedulerStack = stackFactory<SchedulerStack>(
-    SchedulerStack,
-    'NodeBlog-SchedulerStack',
-    {
-      lambdas: {
-        createWeeklyArticles: lambdasStack.lambdas.createWeeklyArticles,
-      },
-    }
-  );
+  stackFactory<S3ImagesStack>(S3ImagesStack, 'NodeBlog-S3ImagesStack', {
+    bucketName: process.env.IMAGES_BUCKET_NAME,
+    accessingLambdas: Object.values(lambdasStack.lambdas),
+  });
+
+  stackFactory<SchedulerStack>(SchedulerStack, 'NodeBlog-SchedulerStack', {
+    lambdas: {
+      createWeeklyArticles: lambdasStack.lambdas.createWeeklyArticles,
+    },
+  });
 
   stackFactory<S3DeploymentStack>(
     S3DeploymentStack,
