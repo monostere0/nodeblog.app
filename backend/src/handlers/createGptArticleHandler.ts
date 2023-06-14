@@ -8,7 +8,7 @@ import createArticleFromParams from '../createArticleFromParams';
 
 import { Article } from '../interfaces';
 import { createResponse } from '../utils/lambda';
-import getTopTwoRedditArticles from '../utils/reddit';
+import getTopTwoArticleTitles from '../utils/nodeweekly';
 import {
   getArticleContentFromTitle,
   getArticleImageFromTitle,
@@ -23,7 +23,7 @@ export const handler: ScheduledHandler = async (
   try {
     console.log(event);
 
-    const suggestedTitles = await getTopTwoRedditArticles();
+    const suggestedTitles = await getTopTwoArticleTitles();
 
     const createArticlesRequests = suggestedTitles.map(
       async (suggestedTitle) => {

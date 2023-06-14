@@ -52,7 +52,7 @@ export default class LambdasStack extends Stack {
         'NodeBlog-createWeeklyArticles',
         'createGptArticleHandler.ts',
         {
-          REDDIT_JSON_URL: process.env.REDDIT_JSON_URL,
+          ARTICLE_TITLES_URL: process.env.ARTICLE_TITLES_URL,
           OPENAI_KEY: process.env.OPENAI_KEY,
           DYNAMO_TABLE: props.tables.postsTable.tableName,
           IMAGES_BUCKET_NAME: process.env.IMAGES_BUCKET_NAME,
